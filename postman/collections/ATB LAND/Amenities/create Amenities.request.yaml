@@ -1,0 +1,24 @@
+$kind: http-request
+url: http://0.0.0.0:5000/api/amenities
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"Buffet sáng\",\r
+
+    \  \"icon\": \"utensils\",\r
+
+    \  \"group\": \"RESORT_SERVICE\",\r
+
+    \  \"applicableTo\": [\"ACCOMMODATION\", \"HOTEL_ROOM\",
+    \"RATE_PACKAGE\"],\r
+
+    \  \"sortOrder\": 1\r
+
+    }\r\n"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_0yvx}}"
+order: 2000

@@ -1,0 +1,67 @@
+$kind: http-request
+url: http://0.0.0.0:5000/api/accommodations
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"title\": \"Huế Riverside Boutique Homestay\",\r
+
+    \  \"category\": \"HOMESTAY\",\r
+
+    \  \"description\": \"Homestay view sông Hương trung tâm TP Huế\",\r
+
+    \  \"location\": {\r
+
+    \    \"city\": \"Huế\",\r
+
+    \    \"district\": \"Phú Hội\",\r
+
+    \    \"ward\": \"Phú Hội\",\r
+
+    \    \"addressDetail\": \"12 Lê Lợi\"\r
+
+    \  },\r
+
+    \  \"pricing\": {\r
+
+    \    \"minNightlyPrice\": 400000,\r
+
+    \    \"defaultProfitPercent\": 12,\r
+
+    \    \"checkInTime\": \"14:00\",\r
+
+    \    \"checkOutTime\": \"12:00\"\r
+
+    \  },\r
+
+    \  \"specs\": {\r
+
+    \    \"starRating\": 4,\r
+
+    \    \"totalRoomsCount\": 5\r
+
+    \  },\r
+
+    \  \"amenityIds\": [\"6b0a3f3323e779cc629dc463\"],\r
+
+    \  \"media\": [\r
+
+    \    {\r
+
+    \      \"url\": \"https://example.com/homestay-cover.jpg\",\r
+
+    \      \"caption\": \"Toàn cảnh mặt tiền\",\r
+
+    \      \"isCover\": true\r
+
+    \    }\r
+
+    \  ]\r
+
+    }\r\n"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_0yvx}}"
+order: 4000

@@ -1,0 +1,17 @@
+$kind: http-request
+url: http://0.0.0.0:5000/api/amenities/6b0a3f3323e779cc629dc463
+method: PATCH
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"Buffet sáng cao cấp\",\r
+
+    \  \"isActive\": true\r
+
+    }\r\n"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_0yvx}}"
+order: 1748

@@ -1,0 +1,4 @@
+$kind: http-request
+url: http://0.0.0.0:5000/api/rental-rooms/6b0a4b565825b777083444c3
+method: GET
+order: 1000

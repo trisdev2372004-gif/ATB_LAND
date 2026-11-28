@@ -1,0 +1,16 @@
+$kind: http-request
+name: update Accommodations status
+url: http://0.0.0.0:5000/api/accommodations/6b0a43075825b7770834442e/status
+method: PATCH
+body:
+  type: json
+  content: "{\r
+
+    \  \"status\": \"ACTIVE\"\r
+
+    }\r\n"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_0yvx}}"
+order: 2000

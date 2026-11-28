@@ -27,7 +27,8 @@ const accommodationSchema = new mongoose.Schema(
       },
     },
     pricing: {
-      minNightlyPrice: { type: Number, required: true, min: 0 },
+      minNightlyPrice: { type: Number, required: true, min: 0 }, // Giá hiển thị cho khách (đã gồm % lợi nhuận)
+      defaultProfitPercent: { type: Number, default: 10, min: 0, max: 100 }, // % lợi nhuận web mặc định (VD: 10%)
       checkInTime: { type: String, default: '14:00' },
       checkOutTime: { type: String, default: '12:00' },
     },
@@ -45,6 +46,25 @@ const accommodationSchema = new mongoose.Schema(
     ],
     reportCount: { type: Number, default: 0 },
     lastConfirmedAt: { type: Date, default: Date.now },
+    checkInTypes: {
+      type: [
+        {
+          type: String,
+          enum: [
+            'SELF_CHECKIN',     // Tự check-in (khóa thông minh / hộp khóa mật mã)
+            'RECEPTION_24_7',   // Sảnh lễ tân 24/7
+            'CONTACT_HOST',     // Liên hệ chủ nhà / quản lý trực tiếp
+            'EXPRESS_CHECKIN',  // Check-in nhanh / Online trước khi đến
+          ],
+        },
+      ],
+      default: ['RECEPTION_24_7'],
+    },
+    checkInInstruction: {
+      type: String,
+      trim: true,
+      default: '', // VD: "Nhắn Zalo chủ nhà trước 30 phút để nhận mã khóa cửa thông minh"
+    },
   },
   { timestamps: true }
 );

@@ -8,7 +8,6 @@ const bookingSchema = new mongoose.Schema(
       enum: ['VIEWING', 'STAY'],
       required: true,
     },
-    // Hình thức đặt lưu trú: Đặt theo giờ (HOURLY) | Đặt qua đêm (OVERNIGHT) | Đặt theo ngày (DAILY)
     stayBookingMode: {
       type: String,
       enum: ['HOURLY', 'OVERNIGHT', 'DAILY', null],
@@ -26,9 +25,19 @@ const bookingSchema = new mongoose.Schema(
       packageCode: { type: String, default: '' },
       packageName: { type: String, default: '' },
       bookingMode: { type: String, enum: ['HOURLY', 'OVERNIGHT', 'DAILY'], default: 'OVERNIGHT' },
-      unitPrice: { type: Number, default: 0 },
+      baseUnitPrice: { type: Number, default: 0 },      // Giá gốc 1 đơn vị trước lợi nhuận
+      profitPercent: { type: Number, default: 0 },      // % lợi nhuận áp dụng
+      customerUnitPrice: { type: Number, default: 0 },  // Đơn giá hiển thị cho khách (đã gồm % lợi nhuận)
       includedServices: [{ type: String }],
       cancellationPolicy: { type: String, default: '' },
+    },
+
+    // Tổng kết lợi nhuận của website trên đơn đặt phòng này
+    profitSummary: {
+      profitPercent: { type: Number, default: 0 },
+      hostSubtotal: { type: Number, default: 0 },     // Tiền phòng gốc (phần của chủ nhà)
+      platformProfit: { type: Number, default: 0 },   // Tiền lợi nhuận web ăn được
+      customerTotal: { type: Number, default: 0 },    // Tổng tiền khách thanh toán (đã cộng lợi nhuận vào giá phòng)
     },
 
     guestId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
@@ -43,31 +52,32 @@ const bookingSchema = new mongoose.Schema(
       default: 'CONFIRMED',
     },
 
-    // 1. Lịch xem phòng trọ (VIEWING)
     viewingSchedule: {
       appointmentTime: { type: Date, default: null },
       timeSlot: { type: String, default: '' },
       note: { type: String, default: '' },
     },
 
-    // 2. Trường Đặt phòng theo giờ (HOURLY)
     hourlyBooking: {
-      bookingDate: { type: Date, default: null },     // Ngày sử dụng
-      checkInTime: { type: String, default: '' },     // VD: "14:00"
-      checkOutTime: { type: String, default: '' },    // VD: "17:00"
+      bookingDate: { type: Date, default: null },
+      checkInTime: { type: String, default: '' },
+      checkOutTime: { type: String, default: '' },
+      baseHours: { type: Number, default: 2, min: 1 },
+      basePrice: { type: Number, default: 0 },
+      extraHourPrice: { type: Number, default: 0 },
       durationHours: { type: Number, default: 2, min: 1 },
+      extraHours: { type: Number, default: 0 },
       roomQuantity: { type: Number, default: 1, min: 1 },
       adults: { type: Number, default: 2 },
       children: { type: Number, default: 0 },
       estimatedTotal: { type: Number, default: 0 },
     },
 
-    // 3. Trường Đặt phòng qua đêm & theo ngày (OVERNIGHT | DAILY)
     overnightOrDailyBooking: {
       stayMode: { type: String, enum: ['OVERNIGHT', 'DAILY'], default: 'OVERNIGHT' },
       checkInDate: { type: Date, default: null },
       checkOutDate: { type: Date, default: null },
-      totalUnits: { type: Number, default: 1, min: 1 }, // Số đêm (OVERNIGHT) hoặc số ngày (DAILY)
+      totalUnits: { type: Number, default: 1, min: 1 },
       roomQuantity: { type: Number, default: 1, min: 1 },
       adults: { type: Number, default: 2 },
       children: { type: Number, default: 0 },

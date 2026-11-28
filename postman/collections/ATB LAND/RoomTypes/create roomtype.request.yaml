@@ -1,0 +1,124 @@
+$kind: http-request
+url: http://0.0.0.0:5000/api/accommodations/6b0a43075825b7770834442e/room-types
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"Deluxe Ban Công Sông Hương\",\r
+
+    \  \"roomCode\": \"DLX-SH\",\r
+
+    \  \"roomType\": \"DELUXE\",\r
+
+    \  \"description\": \"Phòng rộng rãi có ban công riêng nhìn ra sông\",\r
+
+    \  \"area\": 30,\r
+
+    \  \"maxAdults\": 2,\r
+
+    \  \"maxChildren\": 1,\r
+
+    \  \"bedType\": \"1 Giường đôi King\",\r
+
+    \  \"viewType\": \"Hướng sông\",\r
+
+    \  \"amenityIds\": [\"6b0a3f3323e779cc629dc463\"],\r
+
+    \  \"roomUnits\": [\r
+
+    \    {\r
+
+    \      \"roomNumber\": \"P.201\",\r
+
+    \      \"floor\": 2,\r
+
+    \      \"extraFeatures\": [\"Ban công riêng\", \"Góc 2 mặt thoáng\"],\r
+
+    \      \"ratePackages\": [\r
+
+    \        {\r
+
+    \          \"code\": \"H2\",\r
+
+    \          \"name\": \"Nghỉ theo giờ (2 giờ đầu)\",\r
+
+    \          \"bookingMode\": \"HOURLY\",\r
+
+    \          \"baseHours\": 2,\r
+
+    \          \"price\": 200000,\r
+
+    \          \"extraHourPrice\": 60000,\r
+
+    \          \"includedServices\": [\"Wifi tốc độ cao\", \"Nước suối miễn
+    phí\"],\r
+
+    \          \"cancellationPolicy\": \"Miễn phí hủy trước 2 giờ\",\r
+
+    \          \"isDefault\": true\r
+
+    \        },\r
+
+    \        {\r
+
+    \          \"code\": \"H4\",\r
+
+    \          \"name\": \"Nghỉ theo giờ (4 giờ đầu)\",\r
+
+    \          \"bookingMode\": \"HOURLY\",\r
+
+    \          \"baseHours\": 4,\r
+
+    \          \"price\": 320000,\r
+
+    \          \"extraHourPrice\": 50000,\r
+
+    \          \"includedServices\": [\"Wifi tốc độ cao\", \"Nước suối\", \"Trà
+    chiều\"]\r
+
+    \        },\r
+
+    \        {\r
+
+    \          \"code\": \"ON\",\r
+
+    \          \"name\": \"Gói Qua Đêm Tiêu Chuẩn\",\r
+
+    \          \"bookingMode\": \"OVERNIGHT\",\r
+
+    \          \"price\": 500000,\r
+
+    \          \"profitPercent\": 15,\r
+
+    \          \"includedServices\": [\"Wifi\", \"Dọn phòng hằng ngày\"]\r
+
+    \        },\r
+
+    \        {\r
+
+    \          \"code\": \"DL_BB\",\r
+
+    \          \"name\": \"Gói Theo Ngày Kèm Ăn Sáng\",\r
+
+    \          \"bookingMode\": \"DAILY\",\r
+
+    \          \"price\": 650000,\r
+
+    \          \"includedServices\": [\"Buffet sáng\", \"Đưa đón sân bay 1
+    chiều\"]\r
+
+    \        }\r
+
+    \      ]\r
+
+    \    }\r
+
+    \  ]\r
+
+    }\r\n"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_0yvx}}"
+order: 5000

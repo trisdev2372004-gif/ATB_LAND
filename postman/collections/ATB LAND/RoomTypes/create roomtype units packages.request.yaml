@@ -1,0 +1,35 @@
+$kind: http-request
+url: http://0.0.0.0:5000/api/room-types/:roomTypeId/units/:unitId/packages
+method: POST
+pathVariables:
+  - key: roomTypeId
+    value: 6b0a46525825b77708344448
+    description: ""
+  - key: unitId
+    value: 6b0a46525825b77708344449
+    description: ""
+body:
+  type: json
+  content: "{\r
+
+    \  \"code\": \"VIP_PKG\",\r
+
+    \  \"name\": \"Gói Trọn Gói Nghỉ Dưỡng & Spa\",\r
+
+    \  \"bookingMode\": \"DAILY\",\r
+
+    \  \"price\": 900000,\r
+
+    \  \"profitPercent\": 15,\r
+
+    \  \"includedServices\": [\"Buffet sáng\", \"Voucher Spa 60 phút\", \"Miễn
+    phí minibar\"],\r
+
+    \  \"cancellationPolicy\": \"Miễn phí hủy trước 24 giờ\"\r
+
+    }\r\n"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_0yvx}}"
+order: 1000

@@ -2,6 +2,7 @@ import Accommodation from '../models/Accommodation.js';
 import Room from '../models/Room.js';
 import Booking from '../models/Booking.js';
 import { checkRoomAvailability } from '../services/availabilityService.js';
+import { applyProfitMarkup, resolveProfitPercent } from '../utils/pricingHelper.js';
 
 function generateBookingCode() {
   const year = new Date().getFullYear();
@@ -73,6 +74,7 @@ export async function createBooking(req, res) {
       if (!viewingSchedule?.appointmentTime) {
         return res.status(400).json({ success: false, message: 'Vui lòng chọn ngày giờ xem phòng.' });
       }
+
       const booking = await Booking.create({
         bookingCode: generateBookingCode(),
         bookingType: 'VIEWING',
@@ -86,6 +88,7 @@ export async function createBooking(req, res) {
           note: viewingSchedule.note || '',
         },
       });
+
       return res.status(201).json({ success: true, data: booking });
     }
 
@@ -111,6 +114,9 @@ export async function createBooking(req, res) {
     }
 
     const mode = (stayBookingMode || ratePackage.bookingMode || 'OVERNIGHT').toUpperCase();
+    const profitPercent = resolveProfitPercent(ratePackage, accommodation);
+    const { customerPrice: customerUnitPrice } = applyProfitMarkup(ratePackage.price, profitPercent);
+
     const bookingData = {
       bookingCode: generateBookingCode(),
       bookingType: 'STAY',
@@ -124,7 +130,9 @@ export async function createBooking(req, res) {
         packageCode: ratePackage.code || '',
         packageName: ratePackage.name,
         bookingMode: mode,
-        unitPrice: ratePackage.price,
+        baseUnitPrice: ratePackage.price,
+        profitPercent,
+        customerUnitPrice,
         includedServices: ratePackage.includedServices || [],
         cancellationPolicy: ratePackage.cancellationPolicy || '',
       },
@@ -135,33 +143,63 @@ export async function createBooking(req, res) {
 
     if (mode === 'HOURLY') {
       if (!hourlyBooking?.bookingDate || !hourlyBooking?.checkInTime) {
-        return res.status(400).json({ success: false, message: 'Vui lòng nhập ngày và giờ nhận phòng theo giờ.' });
+        return res.status(400).json({
+          success: false,
+          message: 'Vui lòng nhập ngày và giờ nhận phòng theo giờ.',
+        });
       }
-      const hours = Math.max(ratePackage.minHours || 1, Number(hourlyBooking.durationHours || 2));
-      const qty = Math.max(1, Number(hourlyBooking.roomQuantity || 1));
-      const extraHours = Math.max(0, hours - (ratePackage.minHours || 2));
-      const unitTotal = ratePackage.price + extraHours * (ratePackage.extraHourPrice || 0);
+
+      const baseHours = Math.max(1, Number(ratePackage.baseHours || ratePackage.minHours || 2));
+      const basePrice = Math.max(0, Number(ratePackage.price || 0));
+      const extraHourPrice = Math.max(0, Number(ratePackage.extraHourPrice || 0));
+      const durationHours = Math.max(baseHours, Number(hourlyBooking.durationHours || baseHours));
+      const roomQuantity = Math.max(1, Number(hourlyBooking.roomQuantity || 1));
+      const extraHours = Math.max(0, durationHours - baseHours);
+
+      const rawHostSubtotal = (basePrice + extraHours * extraHourPrice) * roomQuantity;
+      const {
+        baseAmount: hostSubtotal,
+        profitAmount: platformProfit,
+        customerPrice: customerTotal,
+      } = applyProfitMarkup(rawHostSubtotal, profitPercent);
+
+      bookingData.profitSummary = {
+        profitPercent,
+        hostSubtotal,
+        platformProfit,
+        customerTotal,
+      };
 
       bookingData.hourlyBooking = {
         bookingDate: new Date(hourlyBooking.bookingDate),
         checkInTime: hourlyBooking.checkInTime,
         checkOutTime: hourlyBooking.checkOutTime || '',
-        durationHours: hours,
-        roomQuantity: qty,
+        baseHours,
+        basePrice,
+        extraHourPrice,
+        durationHours,
+        extraHours,
+        roomQuantity,
         adults: Number(hourlyBooking.adults || 2),
         children: Number(hourlyBooking.children || 0),
-        estimatedTotal: unitTotal * qty,
+        estimatedTotal: customerTotal,
       };
     } else {
       // OVERNIGHT hoặc DAILY
       if (!overnightOrDailyBooking?.checkInDate || !overnightOrDailyBooking?.checkOutDate) {
-        return res.status(400).json({ success: false, message: 'Vui lòng chọn ngày nhận và trả phòng.' });
+        return res.status(400).json({
+          success: false,
+          message: 'Vui lòng chọn ngày nhận và trả phòng.',
+        });
       }
 
       const checkIn = new Date(overnightOrDailyBooking.checkInDate);
       const checkOut = new Date(overnightOrDailyBooking.checkOutDate);
-      if (checkOut <= checkIn) {
-        return res.status(400).json({ success: false, message: 'Ngày trả phòng phải sau ngày nhận phòng.' });
+      if (Number.isNaN(checkIn.getTime()) || Number.isNaN(checkOut.getTime()) || checkOut <= checkIn) {
+        return res.status(400).json({
+          success: false,
+          message: 'Ngày trả phòng phải sau ngày nhận phòng.',
+        });
       }
 
       const availability = await checkRoomAvailability({
@@ -172,8 +210,8 @@ export async function createBooking(req, res) {
         checkOutDate: checkOut,
       });
 
-      const qty = Math.max(1, Number(overnightOrDailyBooking.roomQuantity || 1));
-      if (!availability.available || availability.remaining < qty) {
+      const roomQuantity = Math.max(1, Number(overnightOrDailyBooking.roomQuantity || 1));
+      if (!availability.available || availability.remaining < roomQuantity) {
         return res.status(409).json({
           success: false,
           message: `Phòng ${roomUnit.roomNumber} đã có lịch đặt trùng trong khoảng ngày này.`,
@@ -181,15 +219,29 @@ export async function createBooking(req, res) {
       }
 
       const totalUnits = Math.max(1, Math.round((checkOut - checkIn) / (1000 * 60 * 60 * 24)));
+      const rawHostSubtotal = totalUnits * roomQuantity * Number(ratePackage.price || 0);
+      const {
+        baseAmount: hostSubtotal,
+        profitAmount: platformProfit,
+        customerPrice: customerTotal,
+      } = applyProfitMarkup(rawHostSubtotal, profitPercent);
+
+      bookingData.profitSummary = {
+        profitPercent,
+        hostSubtotal,
+        platformProfit,
+        customerTotal,
+      };
+
       bookingData.overnightOrDailyBooking = {
         stayMode: mode === 'DAILY' ? 'DAILY' : 'OVERNIGHT',
         checkInDate: checkIn,
         checkOutDate: checkOut,
         totalUnits,
-        roomQuantity: qty,
+        roomQuantity,
         adults: Number(overnightOrDailyBooking.adults || 2),
         children: Number(overnightOrDailyBooking.children || 0),
-        estimatedTotal: totalUnits * qty * ratePackage.price,
+        estimatedTotal: customerTotal,
       };
     }
 
@@ -208,6 +260,8 @@ export async function getBookings(req, res) {
     const filter = {};
     if (req.query.phone) {
       filter['guestInfo.phone'] = String(req.query.phone).trim();
+    } else if (req.user?.role === 'ADMIN') {
+      // Admin lấy toàn bộ đơn đặt phòng để thống kê doanh thu & lợi nhuận
     } else if (req.user) {
       filter.guestId = req.user.userId;
     } else {
@@ -215,7 +269,11 @@ export async function getBookings(req, res) {
     }
 
     const bookings = await Booking.find(filter)
-      .populate('accommodationId', 'title category location pricing media')
+      .populate({
+        path: 'accommodationId',
+        select: 'title category location pricing specs media hostId',
+        populate: { path: 'hostId', select: 'fullName phone email hostProfile' },
+      })
       .populate('roomId', 'name roomCode roomType area bedType')
       .sort({ createdAt: -1 });
 

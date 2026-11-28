@@ -4,8 +4,8 @@ import { optionalAuth, authenticate } from '../middlewares/Auth.js';
 
 const router = Router();
 
-router.get('/availability', getAvailability);
-router.post('/', optionalAuth, createBooking);
-router.get('/', optionalAuth, getBookings);
+router.get('/bookings/availability', getAvailability);
+router.post('/bookings', optionalAuth, createBooking);
+router.get('/bookings', optionalAuth, getBookings);
 
 export default router;

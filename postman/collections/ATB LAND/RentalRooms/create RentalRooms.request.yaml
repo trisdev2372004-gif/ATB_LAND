@@ -1,0 +1,64 @@
+$kind: http-request
+url: http://0.0.0.0:5000/api/rental-rooms
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"title\": \"Căn hộ Studio Full Nội Thất Gần Sông Hương\",\r
+
+    \  \"category\": \"STUDIO\",\r
+
+    \  \"description\": \"Giờ giấc tự do, có ban công thoáng mát, nội thất mới
+    100%\",\r
+
+    \  \"location\": {\r
+
+    \    \"city\": \"Huế\",\r
+
+    \    \"district\": \"Vỹ Dạ\",\r
+
+    \    \"ward\": \"Vỹ Dạ\",\r
+
+    \    \"addressDetail\": \"45 Nguyễn Sinh Cung\"\r
+
+    \  },\r
+
+    \  \"pricing\": {\r
+
+    \    \"monthlyRent\": 3200000,\r
+
+    \    \"electricityPrice\": 3500,\r
+
+    \    \"waterPrice\": 25000,\r
+
+    \    \"waterUnit\": \"M3\",\r
+
+    \    \"serviceFee\": 100000,\r
+
+    \    \"depositMonths\": 1\r
+
+    \  },\r
+
+    \  \"specs\": {\r
+
+    \    \"area\": 28,\r
+
+    \    \"floor\": 2,\r
+
+    \    \"maxOccupants\": 2,\r
+
+    \    \"availableRooms\": 2,\r
+
+    \    \"isCurfewFree\": true\r
+
+    \  },\r
+
+    \  \"amenityIds\": [\"6b0a3f3323e779cc629dc463\"]\r
+
+    }\r\n"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_0yvx}}"
+order: 4000

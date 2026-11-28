@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import Accommodation from '../models/Accommodation.js';
 import Room from '../models/Room.js';
+import { applyProfitMarkup, enrichRoomWithCustomerPrices } from '../utils/pricingHelper.js';
 
 function toSlug(text) {
   return (
@@ -23,7 +24,7 @@ function toSlug(text) {
  */
 export async function getAccommodations(req, res) {
   try {
-    const { category, roomType, city, district, priceRange, amenityIds, sortBy } = req.query;
+    const { category, roomType, city, district, priceRange, amenityIds, checkInType, sortBy } = req.query;
     const filter = { status: 'ACTIVE' };
 
     if (category && category !== 'ALL') {
@@ -33,6 +34,15 @@ export async function getAccommodations(req, res) {
     if (city && city !== 'ALL') filter['location.city'] = city;
     if (district && district !== 'ALL') filter['location.district'] = district;
 
+    if (checkInType && checkInType !== 'ALL') {
+      const types = String(checkInType)
+        .split(',')
+        .map((t) => t.trim().toUpperCase())
+        .filter(Boolean);
+      if (types.length > 0) {
+        filter.checkInTypes = { $in: types };
+      }
+    }
     // Lọc theo khoảng giá đêm (khớp với schema Accommodation: pricing.minNightlyPrice)
     if (priceRange && priceRange !== 'ALL') {
       if (priceRange === 'UNDER_500K') filter['pricing.minNightlyPrice'] = { $lt: 500000 };
@@ -110,12 +120,12 @@ export async function getAccommodations(req, res) {
  */
 export async function getAccommodationDetail(req, res) {
   try {
-    const { idOrSlug } = req.params;
+    const rawParam = String(req.params.idOrSlug || '').replace(/^:/, '').trim();
     const { roomType } = req.query;
 
-    const query = mongoose.Types.ObjectId.isValid(idOrSlug)
-      ? { _id: idOrSlug }
-      : { slug: idOrSlug };
+    const query = mongoose.Types.ObjectId.isValid(rawParam)
+      ? { _id: rawParam }
+      : { slug: rawParam };
 
     const item = await Accommodation.findOne(query)
       .populate('hostId', 'fullName phone hostProfile')
@@ -130,23 +140,25 @@ export async function getAccommodationDetail(req, res) {
       roomFilter.roomType = String(roomType).trim().toUpperCase();
     }
 
-    const rooms = await Room.find(roomFilter)
-      .populate('amenityIds', 'name slug icon group')
-      .populate('roomUnits.ratePackages.includedAmenityIds', 'name slug icon group')
-      .sort({ createdAt: 1 });
+    const [rooms, allRoomTypes] = await Promise.all([
+      Room.find(roomFilter)
+        .populate('amenityIds', 'name slug icon group')
+        .populate('roomUnits.ratePackages.includedAmenityIds', 'name slug icon group')
+        .sort({ createdAt: 1 }),
+      Room.distinct('roomType', {
+        accommodationId: item._id,
+        status: 'ACTIVE',
+      }),
+    ]);
 
-    // Danh sách tất cả roomType hiện có của cơ sở lưu trú
-    const allRoomTypes = await Room.distinct('roomType', {
-      accommodationId: item._id,
-      status: 'ACTIVE',
-    });
+    const enrichedRooms = rooms.map((r) => enrichRoomWithCustomerPrices(r, item));
 
     res.json({
       success: true,
       data: {
         ...item.toObject(),
         availableRoomTypes: allRoomTypes,
-        rooms,
+        rooms: enrichedRooms,
       },
     });
   } catch (error) {
@@ -168,8 +180,11 @@ export async function createAccommodation(req, res) {
       specs,
       amenityIds,
       media,
-      roomTypes, // Mảng các hạng phòng tạo kèm khi đăng cơ sở (tùy chọn)
+      checkInTypes,
+      checkInInstruction,
+      roomTypes,
     } = req.body;
+    const defaultProfit = Number(pricing?.defaultProfitPercent ?? 10);
 
     const newItem = await Accommodation.create({
       hostId: req.user.userId,
@@ -181,9 +196,15 @@ export async function createAccommodation(req, res) {
       location,
       pricing: {
         minNightlyPrice: pricing?.minNightlyPrice ?? 0,
+        defaultProfitPercent: Number(pricing?.defaultProfitPercent ?? 10),
         checkInTime: pricing?.checkInTime || '14:00',
         checkOutTime: pricing?.checkOutTime || '12:00',
       },
+      checkInTypes:
+        Array.isArray(checkInTypes) && checkInTypes.length > 0
+          ? checkInTypes.map((t) => String(t).trim().toUpperCase())
+          : ['RECEPTION_24_7'],
+      checkInInstruction: checkInInstruction || '',
       specs: {
         starRating: specs?.starRating || 4,
         totalRoomsCount: specs?.totalRoomsCount || 1,

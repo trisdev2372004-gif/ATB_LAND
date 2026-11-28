@@ -1,0 +1,4 @@
+$kind: http-request
+url: http://0.0.0.0:5000/api/accommodations/6b0a43075825b7770834442e/room-types
+method: GET
+order: 6000

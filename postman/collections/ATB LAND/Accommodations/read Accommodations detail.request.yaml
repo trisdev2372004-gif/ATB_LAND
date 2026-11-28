@@ -1,0 +1,6 @@
+$kind: http-request
+url: http://0.0.0.0:5000/api/accommodations/:6b03b4f480746564c7af77e7
+method: GET
+pathVariables:
+  6b03b4f480746564c7af77e7: ""
+order: 1000

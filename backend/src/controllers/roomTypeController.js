@@ -1,13 +1,22 @@
 import Accommodation from '../models/Accommodation.js';
 import Room from '../models/Room.js';
+import {
+  applyProfitMarkup,
+  resolveProfitPercent,
+  enrichRoomWithCustomerPrices,
+} from '../utils/pricingHelper.js';
 
 /**
  * Đồng bộ lại giá khởi điểm (pricing.minNightlyPrice) và tổng số phòng (specs.totalRoomsCount)
  */
 export async function syncAccommodationMetrics(accommodationId) {
-  const activeRooms = await Room.find({ accommodationId, status: 'ACTIVE' });
+  const [accommodation, activeRooms] = await Promise.all([
+    Accommodation.findById(accommodationId),
+    Room.find({ accommodationId, status: 'ACTIVE' }),
+  ]);
+  if (!accommodation) return;
 
-  let minPrice = Infinity;
+  let minCustomerPrice = Infinity;
   let totalUnits = 0;
 
   for (const room of activeRooms) {
@@ -17,15 +26,19 @@ export async function syncAccommodationMetrics(accommodationId) {
     for (const unit of units) {
       if (unit.status === 'INACTIVE' || unit.status === 'MAINTENANCE') continue;
       for (const pkg of unit.ratePackages || []) {
-        if (pkg.isActive !== false && typeof pkg.price === 'number' && pkg.price < minPrice) {
-          minPrice = pkg.price;
+        if (pkg.isActive !== false && typeof pkg.price === 'number') {
+          const rate = resolveProfitPercent(pkg, accommodation);
+          const { customerPrice } = applyProfitMarkup(pkg.price, rate);
+          if (customerPrice < minCustomerPrice) {
+            minCustomerPrice = customerPrice;
+          }
         }
       }
     }
   }
 
   const updatePayload = {};
-  if (minPrice !== Infinity) updatePayload['pricing.minNightlyPrice'] = minPrice;
+  if (minCustomerPrice !== Infinity) updatePayload['pricing.minNightlyPrice'] = minCustomerPrice;
   if (totalUnits > 0) updatePayload['specs.totalRoomsCount'] = totalUnits;
 
   if (Object.keys(updatePayload).length > 0) {
@@ -46,12 +59,20 @@ export async function getRoomTypesByAccommodation(req, res) {
       filter.roomType = String(roomType).trim().toUpperCase();
     }
 
-    const list = await Room.find(filter)
-      .populate('amenityIds', 'name slug icon group')
-      .populate('roomUnits.ratePackages.includedAmenityIds', 'name slug icon group')
-      .sort({ createdAt: 1 });
+    const [accommodation, list] = await Promise.all([
+      Accommodation.findById(accommodationId),
+      Room.find(filter)
+        .populate('amenityIds', 'name slug icon group')
+        .populate('roomUnits.ratePackages.includedAmenityIds', 'name slug icon group')
+        .sort({ createdAt: 1 }),
+    ]);
 
-    res.json({ success: true, total: list.length, data: list });
+    if (!accommodation) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy cơ sở lưu trú.' });
+    }
+
+    const enriched = list.map((r) => enrichRoomWithCustomerPrices(r, accommodation));
+    res.json({ success: true, total: enriched.length, data: enriched });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

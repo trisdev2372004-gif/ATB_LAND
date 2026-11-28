@@ -1,8 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Header from '../components/layout/Header';
+import { useEffect, useMemo, useState } from 'react';
 import HeroSearch from '../components/layout/user/HeroSearch';
-import Footer from '../components/layout/Footer';
+import NearbyMapSection from '../components/map/NearbyMapSection';
 
 const DISTRICTS_BY_CITY = {
   'Hà Nội': ['Cầu Giấy', 'Đống Đa', 'Tây Hồ', 'Hoàn Kiếm', 'Ba Đình'],
@@ -335,23 +333,23 @@ export default function Home() {
       <article
         key={item.id}
         onClick={() => openDetailModal(item)}
-        className="group cursor-pointer bg-white rounded-2xl border border-slate-200 hover:border-accent-500 shadow-xs hover:shadow-lg transition overflow-hidden flex flex-col justify-between"
+        class="group cursor-pointer bg-white rounded-2xl border border-slate-200 hover:border-accent-500 shadow-xs hover:shadow-lg transition overflow-hidden flex flex-col justify-between"
       >
         <div>
-          <div className="relative h-48 bg-slate-100 overflow-hidden">
+          <div class="relative h-48 bg-slate-100 overflow-hidden">
             <img
               src={cover}
               alt={item.title}
-              className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+              class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
             />
             <button
               type="button"
               onClick={(e) => toggleSaved(item.id, e)}
               aria-label="Lưu yêu thích"
-              className="absolute top-3 right-3 p-2 rounded-full bg-white/90 hover:bg-white shadow-sm transition"
+              class="absolute top-3 right-3 p-2 rounded-full bg-white/90 hover:bg-white shadow-sm transition"
             >
               <svg
-                className={`w-4 h-4 ${isSaved ? 'text-rose-500 fill-current' : 'text-slate-400'}`}
+                class={`w-4 h-4 ${isSaved ? 'text-rose-500 fill-current' : 'text-slate-400'}`}
                 viewBox="0 0 24 24"
                 fill={isSaved ? 'currentColor' : 'none'}
                 stroke="currentColor"
@@ -362,23 +360,23 @@ export default function Home() {
             </button>
           </div>
 
-          <div className="p-4">
-            <div className="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1.5">
+          <div class="p-4">
+            <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1.5">
               <span>
                 {item.district}, {item.city}
               </span>
               <span>{item.area} m²</span>
             </div>
-            <h3 className="text-base font-bold text-slate-900 group-hover:text-accent-600 transition line-clamp-2">
+            <h3 class="text-base font-bold text-slate-900 group-hover:text-accent-600 transition line-clamp-2">
               {item.title}
             </h3>
-            <p className="text-xs text-slate-500 mt-1 line-clamp-2">{item.address}</p>
+            <p class="text-xs text-slate-500 mt-1 line-clamp-2">{item.address}</p>
 
-            <div className="flex flex-wrap gap-1.5 mt-3">
+            <div class="flex flex-wrap gap-1.5 mt-3">
               {item.amenities.slice(0, 3).map((am) => (
                 <span
                   key={am}
-                  className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[11px] font-medium"
+                  class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[11px] font-medium"
                 >
                   {am}
                 </span>
@@ -387,9 +385,9 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-          <span className="text-sm font-extrabold text-accent-600">{item.priceLabel}</span>
-          <span className="text-xs font-bold text-slate-700 group-hover:text-accent-600">
+        <div class="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+          <span class="text-sm font-extrabold text-accent-600">{item.priceLabel}</span>
+          <span class="text-xs font-bold text-slate-700 group-hover:text-accent-600">
             Xem chi tiết →
           </span>
         </div>
@@ -401,125 +399,121 @@ export default function Home() {
   const currentPhoto = activePhotos[photoIndex] || activePhotos[0];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 antialiased">
+    <div class="min-h-screen bg-slate-50 text-slate-800 antialiased">
       {/* Toast */}
-      <div className="fixed top-5 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none">
+      <div class="fixed top-5 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none">
         {toasts.map((t) => (
           <div
             key={t.id}
-            className="px-4 py-3 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-semibold shadow-lg"
+            class="px-4 py-3 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-semibold shadow-lg"
           >
             {t.message}
           </div>
         ))}
       </div>
 
-      <Header
-        onOpenAuthModal={() => navigate('/login')}
-        onOpenPostRoomGuide={() =>
-          showToast('Hướng dẫn đăng tin cho thuê đang được cập nhật')
-        }
-      />
 
-      <HeroSearch
-        totalListings={listings.length}
-        category={category}
-        onCategoryChange={setCategory}
-        city={city}
-        onCityChange={handleCityChange}
-        district={district}
-        onDistrictChange={setDistrict}
-        availableDistricts={availableDistricts}
-        priceRange={priceRange}
-        onPriceRangeChange={setPriceRange}
-        selectedAmenities={selectedAmenities}
-        onToggleAmenity={toggleAmenity}
-        onResetFilters={resetAllFilters}
-        onSearchSubmit={handleSearchSubmit}
-      />
+    <HeroSearch
+    totalListings={listings.length}
+    category={category}
+    onCategoryChange={setCategory}
+    city={city}
+    onCityChange={handleCityChange}
+    district={district}
+    onDistrictChange={setDistrict}
+    availableDistricts={availableDistricts}
+    priceRange={priceRange}
+    onPriceRangeChange={setPriceRange}
+    selectedAmenities={selectedAmenities}
+    onToggleAmenity={toggleAmenity}
+    onResetFilters={resetAllFilters}
+    onSearchSubmit={handleSearchSubmit}
+    />
 
-      {/* 3. THÀNH PHỐ NỔI BẬT (THU NHỎ & KÉO NGANG) */}
-      <section
-        id="thanh-pho-noi-bat"
-        className="bg-white border-b border-slate-200 py-8 sm:py-10"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between gap-3 mb-5">
+{/* <NearbyMapSection /> */}
+      {/* 3. THÀNH PHỐ NỔI BẬT */}
+      <section id="thanh-pho-noi-bat" class="bg-white border-b border-slate-200 py-12 sm:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8">
             <div>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-accent-600">
+              <span class="text-xs font-bold uppercase tracking-wider text-accent-600">
                 Khám phá theo điểm đến
               </span>
-              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">
                 Thành phố nổi bật
               </h2>
             </div>
+            <p class="text-sm text-slate-500">
+              Bấm vào từng thẻ thành phố để lọc nhanh quỹ phòng trọ, khách sạn &amp; resort
+            </p>
+          </div>
 
-            <div className="hidden sm:flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => scrollCities('left')}
-                aria-label="Kéo sang trái"
-                className="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-teal-50 hover:border-teal-500 text-slate-700 transition"
-              >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.4"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 19l-7-7 7-7"
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div
+              onClick={() => filterByFeaturedCity('Hà Nội')}
+              role="button"
+              tabIndex={0}
+              class="group cursor-pointer rounded-2xl border border-slate-200 bg-slate-50/70 hover:bg-white p-5 hover:border-teal-500 hover:shadow-lg transition flex flex-col justify-between"
+            >
+              <div>
+                <div class="relative h-36 rounded-xl overflow-hidden mb-4 bg-slate-200">
+                  <img
+                    src="https://images.unsplash.com/photo-1555921015-5532091f6026?auto=format&fit=crop&w=800&q=80"
+                    alt="Thành phố Hà Nội"
+                    class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                   />
-                </svg>
-              </button>
-              <button
-                type="button"
-                onClick={() => scrollCities('right')}
-                aria-label="Kéo sang phải"
-                className="p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-teal-50 hover:border-teal-500 text-slate-700 transition"
-              >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.4"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </button>
+                  <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent" />
+                  <div class="absolute top-3 left-3">
+                    <span class="px-2.5 py-1 rounded-lg bg-white/90 text-teal-800 text-xs font-bold">
+                      Miền Bắc
+                    </span>
+                  </div>
+                  <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
+                    <h3 class="text-xl font-extrabold">Hà Nội</h3>
+                    <span class="text-xs font-bold bg-emerald-500/90 px-2.5 py-1 rounded-lg">
+                      128 chỗ ở trống
+                    </span>
+                  </div>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  <strong class="text-slate-800">Khu vực trọng điểm:</strong> Cầu Giấy, Đống Đa, Tây Hồ, Hoàn Kiếm, Ba Đình.
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-slate-200/80 flex items-center justify-between text-xs">
+                <span class="text-slate-600">
+                  Giá phổ biến: <strong class="text-accent-600 text-sm">1.1 – 5.2 triệu</strong>
+                </span>
+                <span class="font-bold text-accent-600 group-hover:translate-x-1 transition">
+                  Xem phòng →
+                </span>
+              </div>
+
             </div>
           </div>
 
-          <div
-            ref={cityScrollRef}
-            className="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
-            {FEATURED_CITIES.map((cityItem) => (
-              <div
-                key={cityItem.name}
-                onClick={() => filterByFeaturedCity(cityItem.name)}
-                role="button"
-                tabIndex={0}
-                className="snap-start shrink-0 w-64 sm:w-72 group cursor-pointer rounded-2xl border border-slate-200 bg-slate-50/70 hover:bg-white p-3.5 hover:border-teal-500 hover:shadow-md transition flex flex-col justify-between"
-              >
-                <div>
-                  <div className="relative h-24 rounded-xl overflow-hidden mb-3 bg-slate-200">
-                    <img
-                      src={cityItem.image}
-                      alt={cityItem.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/20 to-transparent" />
-                    <span className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-white/90 text-teal-800 text-[10px] font-bold">
-                      {cityItem.region}
+            <div
+              onClick={() => filterByFeaturedCity('TP. Hồ Chí Minh')}
+              role="button"
+              tabIndex={0}
+              class="group cursor-pointer rounded-2xl border border-slate-200 bg-slate-50/70 hover:bg-white p-5 hover:border-teal-500 hover:shadow-lg transition flex flex-col justify-between"
+            >
+              <div>
+                <div class="relative h-36 rounded-xl overflow-hidden mb-4 bg-slate-200">
+                  <img
+                    src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?auto=format&fit=crop&w=800&q=80"
+                    alt="TP. Hồ Chí Minh"
+                    class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent" />
+                  <div class="absolute top-3 left-3">
+                    <span class="px-2.5 py-1 rounded-lg bg-white/90 text-teal-800 text-xs font-bold">
+                      Miền Nam
+                    </span>
+                  </div>
+                  <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
+                    <h3 class="text-xl font-extrabold">TP. Hồ Chí Minh</h3>
+                    <span class="text-xs font-bold bg-emerald-500/90 px-2.5 py-1 rounded-lg">
+                      154 chỗ ở trống
                     </span>
                     <div className="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between text-white gap-1">
                       <h3 className="text-base font-extrabold truncate">{cityItem.name}</h3>
@@ -533,47 +527,86 @@ export default function Home() {
                     <strong className="text-slate-800">Khu vực:</strong> {cityItem.districts}
                   </p>
                 </div>
-
-                <div className="mt-2.5 pt-2 border-t border-slate-200/80 flex items-center justify-between text-[11px]">
-                  <span className="text-slate-600">
-                    Giá: <strong className="text-accent-600 text-xs">{cityItem.priceRange}</strong>
-                  </span>
-                  <span className="font-bold text-accent-600 group-hover:translate-x-0.5 transition">
-                    Xem →
-                  </span>
-                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  <strong class="text-slate-800">Khu vực trọng điểm:</strong> Bình Thạnh, Quận 1, TP. Thủ Đức, Quận 7, Phú Nhuận.
+                </p>
               </div>
-            ))}
+              <div class="mt-4 pt-3 border-t border-slate-200/80 flex items-center justify-between text-xs">
+                <span class="text-slate-600">
+                  Giá phổ biến: <strong class="text-accent-600 text-sm">1.4 – 6.8 triệu</strong>
+                </span>
+                <span class="font-bold text-accent-600 group-hover:translate-x-1 transition">
+                  Xem phòng →
+                </span>
+              </div>
+            </div>
+
+            <div
+              onClick={() => filterByFeaturedCity('Huế')}
+              role="button"
+              tabIndex={0}
+              class="group cursor-pointer rounded-2xl border border-slate-200 bg-slate-50/70 hover:bg-white p-5 hover:border-teal-500 hover:shadow-lg transition flex flex-col justify-between"
+            >
+              <div>
+                <div class="relative h-36 rounded-xl overflow-hidden mb-4 bg-slate-200">
+                  <img
+                    src="https://focusasiatravel.vn/wp-content/uploads/2018/09/Kinh-th%C3%A0nh-Hu%E1%BA%BF1.jpg"
+                    alt="Thành phố Huế"
+                    class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/20 to-transparent" />
+                  <div class="absolute top-3 left-3">
+                    <span class="px-2.5 py-1 rounded-lg bg-white/90 text-teal-800 text-xs font-bold">
+                      Miền Trung
+                    </span>
+                  </div>
+                  <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
+                    <h3 class="text-xl font-extrabold">Huế</h3>
+                    <span class="text-xs font-bold bg-emerald-500/90 px-2.5 py-1 rounded-lg">
+                      82 chỗ ở trống
+                    </span>
+                  </div>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  <strong class="text-slate-800">Khu vực trọng điểm:</strong> Thuận Hóa, Phú Xuân, Vỹ Dạ, Lăng Cô, Thuận An.
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-slate-200/80 flex items-center justify-between text-xs">
+                <span class="text-slate-600">
+                  Giá phổ biến: <strong class="text-accent-600 text-sm">0.9 – 4.5 triệu</strong>
+                </span>
+                <span class="font-bold text-accent-600 group-hover:translate-x-1 transition">
+                  Xem phòng →
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* 4. DANH SÁCH CHỖ Ở */}
-      <div
-        id="danh-sach-cho-o"
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16"
-      >
-        <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div id="danh-sach-cho-o" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-accent-600">
+            <span class="text-xs font-bold uppercase tracking-wider text-accent-600">
               Cập nhật quỹ phòng theo thời gian thực
             </span>
-            <p className="text-sm sm:text-base font-bold text-slate-900 mt-0.5">
+            <p class="text-sm sm:text-base font-bold text-slate-900 mt-0.5">
               Hiển thị {rooms.length} phòng trọ &amp; căn hộ và {stays.length} khách sạn &amp; resort
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div class="flex flex-wrap items-center gap-3">
             <button
               type="button"
               onClick={() => setOnlySaved((prev) => !prev)}
-              className={`px-3.5 py-2 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center gap-2 ${
+              class={`px-3.5 py-2 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center gap-2 ${
                 onlySaved
                   ? 'border-rose-300 bg-rose-50 text-rose-600'
                   : 'border-slate-200 bg-slate-50 hover:bg-rose-50 hover:border-rose-200 text-slate-700'
               }`}
             >
-              <svg className="w-4 h-4 text-rose-500 fill-current" viewBox="0 0 24 24">
+              <svg class="w-4 h-4 text-rose-500 fill-current" viewBox="0 0 24 24">
                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
               </svg>
               <span>Đã lưu ({savedIds.length})</span>
@@ -583,7 +616,7 @@ export default function Home() {
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               aria-label="Sắp xếp chỗ ở"
-              className="px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm font-semibold text-slate-700 outline-none focus:border-accent-600"
+              class="px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm font-semibold text-slate-700 outline-none focus:border-accent-600"
             >
               <option value="featured">Đề xuất nổi bật</option>
               <option value="price-asc">Giá: Thấp đến cao</option>
@@ -594,40 +627,40 @@ export default function Home() {
         </div>
 
         {/* KHU VỰC 1: PHÒNG TRỌ & CĂN HỘ */}
-        <section id="danh-sach-phong-tro" className="scroll-mt-24">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-4 mb-6 border-b-2 border-accent-600/20">
+        <section id="danh-sach-phong-tro" class="scroll-mt-24">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-4 mb-6 border-b-2 border-accent-600/20">
             <div>
-              <span className="inline-block px-2.5 py-0.5 rounded-lg bg-teal-100 text-accent-600 text-xs font-bold uppercase tracking-wider">
+              <span class="inline-block px-2.5 py-0.5 rounded-lg bg-teal-100 text-accent-600 text-xs font-bold uppercase tracking-wider">
                 Thuê dài hạn theo tháng • Hẹn lịch xem phòng
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1.5">
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1.5">
                 Phòng trọ &amp; Căn hộ
               </h2>
-              <p className="text-sm font-semibold text-accent-600 mt-1">
+              <p class="text-sm font-semibold text-accent-600 mt-1">
                 {rooms.length} phòng trọ &amp; căn hộ
               </p>
             </div>
-            <p className="text-xs sm:text-sm text-slate-500">
+            <p class="text-xs sm:text-sm text-slate-500">
               Minh bạch giá/tháng, điện nước &amp; đặt lịch xem trực tiếp
             </p>
           </div>
 
           {rooms.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {rooms.map(renderCard)}
             </div>
           ) : (
-            <div className="text-center py-12 px-4 bg-white rounded-2xl border border-dashed border-slate-300 mt-4">
-              <h3 className="text-base font-bold text-slate-900">
+            <div class="text-center py-12 px-4 bg-white rounded-2xl border border-dashed border-slate-300 mt-4">
+              <h3 class="text-base font-bold text-slate-900">
                 Không có phòng trọ &amp; căn hộ phù hợp
               </h3>
-              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              <p class="text-xs sm:text-sm text-slate-500 mt-1">
                 Thử đổi thành phố, mức giá hoặc đặt lại bộ lọc để xem các phòng trọ &amp; căn hộ khác.
               </p>
               <button
                 type="button"
                 onClick={resetAllFilters}
-                className="mt-4 px-4 py-2 rounded-xl bg-accent-600 hover:bg-teal-700 text-white text-xs sm:text-sm font-semibold transition"
+                class="mt-4 px-4 py-2 rounded-xl bg-accent-600 hover:bg-teal-700 text-white text-xs sm:text-sm font-semibold transition"
               >
                 Đặt lại bộ lọc
               </button>
@@ -636,40 +669,40 @@ export default function Home() {
         </section>
 
         {/* KHU VỰC 2: KHÁCH SẠN & RESORT */}
-        <section id="danh-sach-ks-resort" className="scroll-mt-24">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-4 mb-6 border-b-2 border-accent-600/25">
+        <section id="danh-sach-ks-resort" class="scroll-mt-24">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-4 mb-6 border-b-2 border-accent-600/25">
             <div>
-              <span className="inline-block px-2.5 py-0.5 rounded-lg bg-teal-100 text-accent-600 text-xs font-bold uppercase tracking-wider">
+              <span class="inline-block px-2.5 py-0.5 rounded-lg bg-teal-100 text-accent-600 text-xs font-bold uppercase tracking-wider">
                 Lưu trú theo đêm • Không thu cọc trước
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1.5">
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1.5">
                 Khách sạn &amp; Resort
               </h2>
-              <p className="text-sm font-semibold text-accent-600 mt-1">
+              <p class="text-sm font-semibold text-accent-600 mt-1">
                 {stays.length} khách sạn &amp; resort
               </p>
             </div>
-            <p className="text-xs sm:text-sm text-slate-500">
+            <p class="text-xs sm:text-sm text-slate-500">
               Hiển thị giá/đêm, hạng sao &amp; thanh toán trực tiếp tại nơi ở
             </p>
           </div>
 
           {stays.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {stays.map(renderCard)}
             </div>
           ) : (
-            <div className="text-center py-12 px-4 bg-white rounded-2xl border border-dashed border-slate-300 mt-4">
-              <h3 className="text-base font-bold text-slate-900">
+            <div class="text-center py-12 px-4 bg-white rounded-2xl border border-dashed border-slate-300 mt-4">
+              <h3 class="text-base font-bold text-slate-900">
                 Không có khách sạn &amp; resort phù hợp
               </h3>
-              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              <p class="text-xs sm:text-sm text-slate-500 mt-1">
                 Thử đổi thành phố, mức giá hoặc đặt lại bộ lọc để xem các khách sạn &amp; resort khác.
               </p>
               <button
                 type="button"
                 onClick={resetAllFilters}
-                className="mt-4 px-4 py-2 rounded-xl bg-accent-600 hover:bg-teal-700 text-white text-xs sm:text-sm font-semibold transition"
+                class="mt-4 px-4 py-2 rounded-xl bg-accent-600 hover:bg-teal-700 text-white text-xs sm:text-sm font-semibold transition"
               >
                 Đặt lại bộ lọc
               </button>
@@ -720,22 +753,22 @@ export default function Home() {
       {/* 6. MODAL CHI TIẾT */}
       {selectedListing && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 backdrop-blur-xs p-3 sm:p-5 overflow-y-auto"
+          class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 backdrop-blur-xs p-3 sm:p-5 overflow-y-auto"
           role="dialog"
           aria-modal="true"
         >
-          <div className="bg-white rounded-3xl max-w-4xl w-full shadow-2xl border border-slate-100 overflow-hidden my-auto">
-            <div className="px-5 sm:px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-3">
+          <div class="bg-white rounded-3xl max-w-4xl w-full shadow-2xl border border-slate-100 overflow-hidden my-auto">
+            <div class="px-5 sm:px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-3">
               <div>
-                <div className="flex flex-wrap items-center gap-2 mb-1">
-                  <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-100 text-accent-600">
+                <div class="flex flex-wrap items-center gap-2 mb-1">
+                  <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-100 text-accent-600">
                     {selectedListing.category}
                   </span>
-                  <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                  <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
                     ✓ Xác thực chính chủ
                   </span>
                 </div>
-                <h3 className="text-lg sm:text-xl font-extrabold text-slate-900">
+                <h3 class="text-lg sm:text-xl font-extrabold text-slate-900">
                   {selectedListing.title}
                 </h3>
               </div>
@@ -743,31 +776,21 @@ export default function Home() {
                 type="button"
                 onClick={() => setSelectedListing(null)}
                 aria-label="Đóng chi tiết"
-                className="p-2 rounded-xl text-slate-500 hover:bg-slate-200/70 hover:text-slate-800 transition"
+                class="p-2 rounded-xl text-slate-500 hover:bg-slate-200/70 hover:text-slate-800 transition"
               >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
-            <div className="p-5 sm:p-6 space-y-5 max-h-[80vh] overflow-y-auto">
-              <div className="space-y-3">
-                <div className="relative aspect-[16/9] sm:aspect-[16/8] rounded-2xl bg-slate-100 overflow-hidden border border-slate-200">
+            <div class="p-5 sm:p-6 space-y-5 max-h-[80vh] overflow-y-auto">
+              <div class="space-y-3">
+                <div class="relative aspect-[16/9] sm:aspect-[16/8] rounded-2xl bg-slate-100 overflow-hidden border border-slate-200">
                   <img
                     src={currentPhoto?.url}
                     alt={currentPhoto?.caption || selectedListing.title}
-                    className="w-full h-full object-cover"
+                    class="w-full h-full object-cover"
                   />
                   {activePhotos.length > 1 && (
                     <>
@@ -779,20 +802,10 @@ export default function Home() {
                           )
                         }
                         aria-label="Ảnh trước"
-                        className="absolute left-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-md transition"
+                        class="absolute left-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-md transition"
                       >
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2.4"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M15 19l-7-7 7-7"
-                          />
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.4" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                         </svg>
                       </button>
                       <button
@@ -801,82 +814,141 @@ export default function Home() {
                           setPhotoIndex((i) => (i + 1) % activePhotos.length)
                         }
                         aria-label="Ảnh tiếp theo"
-                        className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-md transition"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-md transition"
                       >
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2.4"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M9 5l7 7-7 7"
-                          />
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.4" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                         </svg>
                       </button>
                     </>
                   )}
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 pointer-events-none">
-                    <span className="px-3 py-1 rounded-full bg-slate-900/75 text-white text-xs font-semibold">
+                  <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 pointer-events-none">
+                    <span class="px-3 py-1 rounded-full bg-slate-900/75 text-white text-xs font-semibold">
                       {currentPhoto?.caption || selectedListing.title}
                     </span>
-                    <span className="px-3 py-1 rounded-full bg-slate-900/75 text-white text-xs font-bold">
+                    <span class="px-3 py-1 rounded-full bg-slate-900/75 text-white text-xs font-bold">
                       {photoIndex + 1} / {activePhotos.length}
                     </span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-4 gap-2.5">
+                <div class="grid grid-cols-4 gap-2.5">
                   {activePhotos.map((img, idx) => (
                     <button
                       key={img.url + idx}
                       type="button"
                       onClick={() => setPhotoIndex(idx)}
-                      className={`h-16 rounded-xl overflow-hidden border-2 transition ${
-                        idx === photoIndex
-                          ? 'border-accent-600'
-                          : 'border-transparent opacity-75 hover:opacity-100'
+                      class={`h-16 rounded-xl overflow-hidden border-2 transition ${
+                        idx === photoIndex ? 'border-accent-600' : 'border-transparent opacity-75 hover:opacity-100'
                       }`}
                     >
-                      <img
-                        src={img.url}
-                        alt={img.caption}
-                        className="w-full h-full object-cover"
-                      />
+                      <img src={img.url} alt={img.caption} class="w-full h-full object-cover" />
                     </button>
                   ))}
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <div className="text-2xl font-extrabold text-accent-600">
+              <div class="space-y-3">
+                <div class="flex flex-wrap items-baseline justify-between gap-2">
+                  <div class="text-2xl font-extrabold text-accent-600">
                     {selectedListing.priceLabel}
                   </div>
-                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                  <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
                     Không thu cọc trước
                   </span>
                 </div>
-                <p className="text-sm text-slate-600 font-medium">
-                  {selectedListing.address}
-                </p>
-                <p className="text-sm text-slate-600 leading-relaxed">
-                  {selectedListing.description}
-                </p>
+                <p class="text-sm text-slate-600 font-medium">{selectedListing.address}</p>
+                <p class="text-sm text-slate-600 leading-relaxed">{selectedListing.description}</p>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      <Footer
-        onOpenPostGuide={() =>
-          showToast('Hướng dẫn đăng tin cho thuê đang được cập nhật')
-        }
-      />
+      <section id="danh-cho-chu-tro" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div class="bg-gray-500 rounded-3xl p-6 sm:p-10 text-white shadow-xl mb-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div class="lg:col-span-7">
+            <span class="inline-block px-3 py-1 rounded-full bg-accent-500/20 text-teal-300 text-xs font-bold border border-accent-500/30 mb-3">
+                DÀNH CHO CHỦ TRỌ &amp; NHÀ ĐẦU TƯ
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold leading-snug">
+                Quản lý phòng trống, bộ sưu tập ảnh &amp; lịch hẹn xem phòng tập trung
+            </h2>
+            <p class="text-slate-300 text-sm sm:text-base mt-3">
+                Đăng tin trực tiếp trên giao diện hiện đại, tải nhiều góc ảnh thực tế, bật/tắt trạng thái phòng chỉ với 1 chạm và tiếp nhận lịch hẹn xem phòng rõ ràng.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-3">
+                <button type="button" onclick="openPostRoomGuide()" class="px-5 py-2.5 rounded-xl bg-accent-500 hover:bg-accent-600 text-white text-sm font-bold transition shadow-md">
+                Đăng tin cho thuê ngay
+                </button>
+                <a href="#cam-ket-phap-ly" class="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-sm font-semibold transition">
+                Xem quy chế vận hành
+                </a>
+            </div>
+            </div>
+
+            <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/10">
+                <div class="text-sm font-bold text-teal-300">Chủ trọ Xác thực</div>
+                <p class="text-xs text-slate-200 mt-1">Gắn huy hiệu uy tín khi xác minh thông tin chủ sở hữu hoặc hợp đồng quản lý.</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/10">
+                <div class="text-sm font-bold text-teal-300">Tự động ẩn sau 21 ngày</div>
+                <p class="text-xs text-slate-200 mt-1">Yêu cầu xác nhận còn phòng định kỳ để đảm bảo dữ liệu luôn chính xác.</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/10">
+                <div class="text-sm font-bold text-teal-300">Ảnh thực tế đa góc nhìn</div>
+                <p class="text-xs text-slate-200 mt-1">Hiển thị đầy đủ không gian phòng, khu bếp, nhà vệ sinh và ban công trước khi hẹn xem.</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/10">
+                <div class="text-sm font-bold text-teal-300">Báo cáo tin sai sự thật</div>
+                <p class="text-xs text-slate-200 mt-1">Cơ chế tiếp nhận phản hồi từ người tìm thuê để kiểm duyệt và xử lý kịp thời.</p>
+            </div>
+            </div>
+        </div>
+        </div>
+
+
+        <div id="cam-ket-phap-ly" class="pt-2">
+        <div class="text-center max-w-2xl mx-auto mb-8">
+            <span class="text-xs font-bold uppercase tracking-wider text-accent-600">Minh bạch &amp; An toàn</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">
+            Cam kết chống tin ảo &amp; Tuân thủ pháp lý
+            </h2>
+            <p class="text-sm text-slate-600 mt-2">
+            ATB LAND xây dựng quy chuẩn vận hành rõ ràng, bảo vệ quyền lợi người thuê, chủ trọ và tuân thủ quy định pháp luật tại Việt Nam.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold mb-4">01</div>
+            <h3 class="text-base font-bold text-slate-900">Chống tin ảo &amp; Môi giới mạo danh</h3>
+            <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+                Kiểm duyệt nội dung trước khi đăng, yêu cầu xác thực thông tin chủ cho thuê, tự động ẩn tin sau 21 ngày nếu không xác nhận còn trống và hỗ trợ nút báo cáo tin sai sự thật.
+            </p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-bold mb-4">02</div>
+            <h3 class="text-base font-bold text-slate-900">Minh bạch chi phí &amp; Quy chế hoạt động</h3>
+            <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+                Công khai giá thuê, giá điện/nước và tiện ích ngay trên tin đăng; quy định rõ quy trình hẹn xem phòng trực tiếp, trao đổi trực tiếp với chủ trọ và cơ chế hỗ trợ giải quyết khiếu nại.
+            </p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold mb-4">03</div>
+            <h3 class="text-base font-bold text-slate-900">Tuân thủ TMĐT &amp; Bảo vệ dữ liệu cá nhân</h3>
+            <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+                Hướng tới đăng ký sàn/website thương mại điện tử theo quy định hiện hành và áp dụng chính sách bảo vệ dữ liệu cá nhân (như họ tên, số điện thoại, lịch hẹn) an toàn, đúng mục đích.
+            </p>
+            </div>
+        </div>
+        </div>
+    </section>
+      
     </div>
   );
 }

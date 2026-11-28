@@ -1,0 +1,15 @@
+$kind: http-request
+url: http://0.0.0.0:5000/api/auth/register
+method: POST
+body:
+  type: json
+  content: "{\"fullName\":\"Nguyễn Văn A\",\r
+
+    \"email\":\"host1@atbland.vn\",\r
+
+    \"phone\":\"0905123456\",\r
+
+    \"password\":\"123456\",\r
+
+    \"role\":\"HOST\"}"
+order: 1158

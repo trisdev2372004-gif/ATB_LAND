@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/layout/Header';
-import Footer from '../components/layout/Footer';
+
 import SearchFilterForm from '../components/ui/SearchFilterForm';
 
 const GUESTHOUSE_LISTINGS = [
@@ -261,11 +260,7 @@ export default function GuesthousesPage() {
         ))}
       </div>
 
-      {/* Header dùng chung */}
-      <Header
-        onOpenAuthModal={() => navigate('/login')}
-        onOpenPostRoomGuide={() => showToast('Tính năng Đăng tin cho cơ sở lưu trú đang được cập nhật')}
-      />
+
 
       {/* Banner đầu trang Nhà nghỉ */}
       <section className="bg-gradient-to-br from-slate-900 via-teal-900 to-teal-700 pt-10 pb-14 text-white">
@@ -575,11 +570,6 @@ export default function GuesthousesPage() {
           </div>
         </div>
       )}
-
-      {/* Footer dùng chung */}
-      <Footer
-        onOpenPostGuide={() => showToast('Hướng dẫn đăng tin cơ sở lưu trú đang được cập nhật')}
-      />
     </div>
   );
 }

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ATB LAND - Đăng Ký Tài Khoản Cá Nhân</title>
+  <meta name="description" content="Đăng ký tài khoản cá nhân trên ATB LAND dành cho người tìm phòng trọ, đặt Homestay/Khách sạn/Resort hoặc Host cá nhân." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#4f46e5',
+              600: '#4338ca',
+              700: '#3730a3',
+              900: '#1e1b4b',
+            },
+            accent: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#0d9488',
+              600: '#0f766e',
+              700: '#115e59',
+            }
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-800 font-sans antialiased selection:bg-accent-600 selection:text-white flex flex-col">
+  <!-- Thanh thông báo nổi -->
+  <div id="toast-container" class="fixed top-5 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+
+  <!-- Thanh điều hướng -->
+  <header class="bg-white/95 backdrop-blur border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+      <a href="register.html" class="flex items-center gap-2.5 group shrink-0">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-600 to-accent-700 flex items-center justify-center text-white font-extrabold text-lg shadow-md group-hover:scale-105 transition">
+          ATB
+        </div>
+        <div>
+          <span class="block text-lg font-extrabold tracking-tight text-slate-900 leading-none">ATB LAND</span>
+          <span class="block text-[11px] font-semibold text-accent-600 tracking-wide mt-0.5">TRỌ • HOMESTAY • KS • RESORT</span>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap justify-end">
+        <a
+          href="login.html"
+          class="px-3 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:bg-slate-100 transition"
+        >
+          Đăng nhập
+        </a>
+        <a
+          href="register.html"
+          class="px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-accent-600 text-white shadow-xs transition"
+        >
+          Đăng ký cá nhân
+        </a>
+        <a
+          href="register-enterprise.html"
+          class="px-3 py-2 rounded-xl text-xs sm:text-sm font-bold text-accent-700 bg-accent-50 hover:bg-accent-100 border border-accent-200 transition"
+        >
+          Đăng ký doanh nghiệp
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Nội dung chính Split-Layout -->
+  <main class="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div class="max-w-5xl w-full bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+      <!-- Cột trái: Branding & Giá trị cốt lõi ATB LAND -->
+      <div class="lg:col-span-5 relative bg-gradient-to-br from-slate-900 via-accent-700 to-accent-600 p-7 sm:p-9 text-white flex flex-col justify-between overflow-hidden">
+        <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-16 w-72 h-72 rounded-full bg-teal-300/15 blur-3xl pointer-events-none"></div>
+
+        <div class="relative space-y-5">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 border border-white/20 text-xs font-semibold">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Tài khoản cá nhân ATB LAND
+          </span>
+
+          <h1 class="text-2xl sm:text-3xl font-extrabold leading-tight">
+            Đặt phòng trọ, Homestay &amp; Khách sạn dễ dàng cho cá nhân
+          </h1>
+
+          <p class="text-xs sm:text-sm text-teal-50/90 leading-relaxed">
+            Dành cho người thuê phòng trọ, du khách đặt phòng theo giờ hoặc theo đêm, và chủ nhà/Host cá nhân quản lý phòng cho thuê.
+          </p>
+
+          <div class="space-y-3 pt-2 text-xs">
+            <div class="flex items-start gap-3 bg-white/10 backdrop-blur rounded-2xl p-3.5 border border-white/10">
+              <span class="w-6 h-6 rounded-lg bg-emerald-400/20 text-emerald-300 font-extrabold flex items-center justify-center shrink-0">✓</span>
+              <div>
+                <div class="font-bold text-white">Không thu cọc trực tuyến</div>
+                <p class="text-teal-100/80 mt-0.5">Đặt lịch xem phòng hoặc giữ phòng miễn phí, thanh toán trực tiếp tại cơ sở.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 bg-white/10 backdrop-blur rounded-2xl p-3.5 border border-white/10">
+              <span class="w-6 h-6 rounded-lg bg-emerald-400/20 text-emerald-300 font-extrabold flex items-center justify-center shrink-0">✓</span>
+              <div>
+                <div class="font-bold text-white">Xác thực chính chủ • Chống tin ảo</div>
+                <p class="text-teal-100/80 mt-0.5">Kiểm duyệt thông tin chủ cơ sở và tự động làm mới quỹ phòng mỗi 21 ngày.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 bg-white/10 backdrop-blur rounded-2xl p-3.5 border border-white/10">
+              <span class="w-6 h-6 rounded-lg bg-emerald-400/20 text-emerald-300 font-extrabold flex items-center justify-center shrink-0">✓</span>
+              <div>
+                <div class="font-bold text-white">Bảo mật dữ liệu cá nhân</div>
+                <p class="text-teal-100/80 mt-0.5">Tuân thủ Nghị định 13/2023/NĐ-CP về bảo vệ thông tin người dùng.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="relative pt-6 mt-6 border-t border-white/15 flex items-center justify-between text-xs text-teal-100/80">
+          <span>Hà Nội • TP. HCM • Huế</span>
+          <span class="font-semibold text-white">Hotline: 1900 6868</span>
+        </div>
+      </div>
+
+      <!-- Cột phải: Form Đăng ký Cá nhân -->
+      <div class="lg:col-span-7 p-6 sm:p-10 flex flex-col justify-center space-y-4">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full bg-accent-50 text-accent-700 text-xs font-bold mb-2">
+            ĐĂNG KÝ TÀI KHOẢN CÁ NHÂN
+          </span>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">Tạo tài khoản cá nhân ATB LAND</h2>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1">
+            Nếu bạn đại diện công ty hoặc chuỗi lưu trú, hãy dùng <a href="register-enterprise.html" class="font-bold text-brand-600 hover:underline">Đăng ký doanh nghiệp</a>.
+          </p>
+        </div>
+
+        <form id="register-form" class="space-y-3.5">
+          <!-- Chọn mục đích cá nhân (GUEST vs HOST cá nhân) -->
+          <div>
+            
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label for="reg-fullname" class="block text-xs font-bold text-slate-700 mb-1">Họ và tên *</label>
+              <input
+                id="reg-fullname"
+                type="text"
+                required
+                placeholder="Nguyễn Minh Anh"
+                class="w-full rounded-xl border border-slate-300 bg-slate-50/60 focus:bg-white px-3.5 py-2.5 text-sm outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-100 transition"
+              />
+            </div>
+
+            <div>
+              <label for="reg-phone" class="block text-xs font-bold text-slate-700 mb-1">Số điện thoại *</label>
+              <input
+                id="reg-phone"
+                type="tel"
+                required
+                pattern="[0-9\s]{9,13}"
+                placeholder="0912 345 678"
+                class="w-full rounded-xl border border-slate-300 bg-slate-50/60 focus:bg-white px-3.5 py-2.5 text-sm outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-100 transition"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="reg-email" class="block text-xs font-bold text-slate-700 mb-1">Địa chỉ Email *</label>
+            <input
+              id="reg-email"
+              type="email"
+              required
+              placeholder="minhanh@gmail.com"
+              class="w-full rounded-xl border border-slate-300 bg-slate-50/60 focus:bg-white px-3.5 py-2.5 text-sm outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-100 transition"
+            />
+          </div>
+
+          <!-- Trường bổ sung khi chọn Host cá nhân -->
+          <div id="host-extra-field" class="hidden">
+            <label for="reg-property-name" class="block text-xs font-bold text-slate-700 mb-1">
+              Tên nhà trọ hoặc Homestay cá nhân *
+            </label>
+            <input
+              id="reg-property-name"
+              type="text"
+              placeholder="VD: Phòng trọ An Cựu hoặc Homestay Vỹ Dạ"
+              class="w-full rounded-xl border border-slate-300 bg-slate-50/60 focus:bg-white px-3.5 py-2.5 text-sm outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-100 transition"
+            />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label for="reg-password" class="block text-xs font-bold text-slate-700 mb-1">Mật khẩu *</label>
+              <div class="relative">
+                <input
+                  id="reg-password"
+                  type="password"
+                  required
+                  minlength="6"
+                  placeholder="Tối thiểu 6 ký tự"
+                  class="w-full rounded-xl border border-slate-300 bg-slate-50/60 focus:bg-white px-3.5 pr-11 py-2.5 text-sm outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-100 transition"
+                />
+                <button
+                  type="button"
+                  onclick="togglePasswordVisibility('reg-password', this)"
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700 text-xs font-semibold"
+                >
+                  Hiện
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label for="reg-confirm-password" class="block text-xs font-bold text-slate-700 mb-1">Nhập lại mật khẩu *</label>
+              <input
+                id="reg-confirm-password"
+                type="password"
+                required
+                minlength="6"
+                placeholder="Xác nhận mật khẩu"
+                class="w-full rounded-xl border border-slate-300 bg-slate-50/60 focus:bg-white px-3.5 py-2.5 text-sm outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-100 transition"
+              />
+            </div>
+          </div>
+
+          <label class="flex items-start gap-2.5 text-xs text-slate-600 cursor-pointer select-none pt-1">
+            <input id="reg-terms" type="checkbox" required class="w-4 h-4 mt-0.5 rounded border-slate-300 text-accent-600 focus:ring-accent-500" />
+            <span>
+              Tôi đồng ý với <span class="font-semibold text-slate-800">Quy chế hoạt động ATB LAND</span> và chính sách bảo vệ dữ liệu cá nhân theo Nghị định 13/2023/NĐ-CP.
+            </span>
+          </label>
+
+          <button
+            type="submit"
+            class="w-full py-3 px-4 rounded-xl bg-accent-600 hover:bg-accent-700 active:scale-[0.99] text-white text-sm font-extrabold shadow-lg shadow-accent-600/25 transition"
+          >
+            Hoàn tất đăng ký cá nhân
+          </button>
+        </form>
+
+        <div class="text-center text-xs text-slate-500 pt-1 flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+          <span>
+            Đã có tài khoản?
+            <a href="login.html" class="font-bold text-accent-600 hover:underline">Đăng nhập</a>
+          </span>
+          <span>
+            Đăng ký cho công ty?
+            <a href="register-enterprise.html" class="font-bold text-brand-600 hover:underline">Tài khoản doanh nghiệp</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function showToast(message, isError = false) {
+      const container = document.getElementById('toast-container');
+      const el = document.createElement('div');
+      el.className = `pointer-events-auto border-l-4 ${
+        isError ? 'border-rose-500' : 'border-emerald-500'
+      } bg-slate-900 text-white rounded-2xl px-4 py-3 shadow-xl text-xs sm:text-sm font-medium`;
+      el.textContent = message;
+      container.appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }
+
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const isHidden = input.type === 'password';
+      input.type = isHidden ? 'text' : 'password';
+      btn.textContent = isHidden ? 'Ẩn' : 'Hiện';
+    }
+
+    function selectRegisterRole(role) {
+      document.getElementById('register-role').value = role;
+      const isGuest = role === 'GUEST';
+
+      const guestBtn = document.getElementById('role-btn-guest');
+      const hostBtn = document.getElementById('role-btn-host');
+      const hostField = document.getElementById('host-extra-field');
+      const propertyInput = document.getElementById('reg-property-name');
+
+      if (isGuest) {
+        guestBtn.className = 'p-3 rounded-2xl border-2 border-accent-600 bg-accent-50/70 text-left transition';
+        guestBtn.querySelector('div').className = 'text-xs sm:text-sm font-extrabold text-accent-700';
+        hostBtn.className = 'p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-slate-300 text-left transition';
+        hostBtn.querySelector('div').className = 'text-xs sm:text-sm font-extrabold text-slate-800';
+        hostField.classList.add('hidden');
+        propertyInput.required = false;
+      } else {
+        hostBtn.className = 'p-3 rounded-2xl border-2 border-accent-600 bg-accent-50/70 text-left transition';
+        hostBtn.querySelector('div').className = 'text-xs sm:text-sm font-extrabold text-accent-700';
+        guestBtn.className = 'p-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-slate-300 text-left transition';
+        guestBtn.querySelector('div').className = 'text-xs sm:text-sm font-extrabold text-slate-800';
+        hostField.classList.remove('hidden');
+        propertyInput.required = true;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('register-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const pass = document.getElementById('reg-password').value;
+        const confirmPass = document.getElementById('reg-confirm-password').value;
+        const fullName = document.getElementById('reg-fullname').value.trim();
+        const email = document.getElementById('reg-email').value.trim();
+        const role = document.getElementById('register-role').value;
+
+        if (pass !== confirmPass) {
+          showToast('Mật khẩu xác nhận chưa trùng khớp. Vui lòng kiểm tra lại!', true);
+          document.getElementById('reg-confirm-password').focus();
+          return;
+        }
+
+        const roleLabel = role === 'HOST' ? 'Chủ trọ / Host cá nhân' : 'Khách tìm phòng / lưu trú';
+        showToast(`Đăng ký tài khoản cá nhân thành công cho ${fullName} (${roleLabel})! Đang chuyển sang đăng nhập...`);
+        setTimeout(() => {
+          window.location.href = `login.html?email=${encodeURIComponent(email)}`;
+        }, 1000);
+      });
+    });
+  </script>
+</body>
+</html>

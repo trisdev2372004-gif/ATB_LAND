@@ -14,7 +14,7 @@ import roomRoutes from './routes/roomRoutes.js';
 import bookingRoutes from './routes/bookingRoutes.js';
 import RoomTypeRoutes from './routes/roomTypeRoutes.js';
 import RatingRoutes from './routes/ratingRoutes.js'
-
+import mapRoutes from './routes/mapRoutes.js'
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -45,6 +45,7 @@ app.use('/api', roomRoutes);
 app.use('/api', bookingRoutes);
 app.use('/api', RoomTypeRoutes);
 app.use('/api', RatingRoutes);
+app.use('/api/map', mapRoutes);
 
 
 

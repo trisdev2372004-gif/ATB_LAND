@@ -1,0 +1,4 @@
+$kind: http-request
+url: http://0.0.0.0:5000/api/amenities
+method: GET
+order: 3000

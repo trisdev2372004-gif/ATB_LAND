@@ -1,0 +1,39 @@
+$kind: http-request
+url: http://0.0.0.0:5000/api/room-types/:roomTypeId
+method: DELETE
+pathVariables:
+  roomTypeId: 6b0a46525825b77708344448
+body:
+  type: json
+  content: "{\r
+
+    \  \"roomNumber\": \"P.202\",\r
+
+    \  \"floor\": 2,\r
+
+    \  \"area\": 32,\r
+
+    \  \"ratePackages\": [\r
+
+    \    {\r
+
+    \      \"name\": \"Gói Qua Đêm Cơ Bản\",\r
+
+    \      \"bookingMode\": \"OVERNIGHT\",\r
+
+    \      \"price\": 520000,\r
+
+    \      \"includedServices\": [\"Wifi\", \"Nước suối\"],\r
+
+    \      \"isDefault\": true\r
+
+    \    }\r
+
+    \  ]\r
+
+    }\r\n"
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_0yvx}}"
+order: 3000

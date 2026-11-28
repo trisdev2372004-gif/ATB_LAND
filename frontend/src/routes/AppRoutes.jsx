@@ -1,29 +1,37 @@
 import { Routes, Route } from 'react-router-dom';
 import AdminLayout from '../layouts/AdminLayout';
 import ProtectedAdminRoute from '../components/auth/ProtectedAdminRoute';
-import LoginPage from '../pages/auth/LoginPage';
+
 import DashboardPage from '../pages/admin/DashboardPage';
 import AccommodationsPage from '../pages/admin/AccommodationsPage';
 import RentalRoomsPage from '../pages/admin/RentalRoomsPage';
 import AmenitiesPage from '../pages/admin/AmenitiesPage';
 import BookingsPage from '../pages/admin/BookingsPage';
 import RatingsPage from '../pages/admin/RatingsPage';
-
+//auth
+import LoginPage from '../pages/auth/LoginPage';
+import RegisterPage from '../pages/auth/RegisterPage';
+import RegisterEnterprisePage from '../pages/auth/RegisterEnterprisePage';
 // import ui
+import UserLayout from '../layouts/UserLayout';
 import Home from '../pages/Home';
 import RoomsPage from '../pages/RoomsPage';
 import GuesthousesPage from '../pages/GuesthousesPage';
 
-
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* Trang chủ khi truy cập "/" lần đầu */}
-      <Route path="/" element={<Home />} />
-      <Route path="/nha-nghi" element={<GuesthousesPage />} />
-      <Route path="/phong-tro" element={<RoomsPage />} />
+      {/* Lồng các route con vào bên trong UserLayout */}
+      <Route path="/" element={<UserLayout />}>
+        <Route index element={<Home />} />
+        <Route path="nha-nghi" element={<GuesthousesPage />} />
+        <Route path="phong-tro" element={<RoomsPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/register-enterprise" element={<RegisterEnterprisePage />} />
+      </Route>
 
-      <Route path="/login" element={<LoginPage />} />
+      
 
       <Route element={<ProtectedAdminRoute />}>
         <Route path="/admin" element={<AdminLayout />}>
@@ -36,7 +44,14 @@ export default function AppRoutes() {
         </Route>
       </Route>
 
-      <Route path="*" element={<div className="p-8 text-center">404 - Không tìm thấy trang</div>} />
+      <Route
+        path="*"
+        element={
+          <UserLayout>
+            <div className="p-8 text-center">404 - Không tìm thấy trang</div>
+          </UserLayout>
+        }
+      />
     </Routes>
   );
 }

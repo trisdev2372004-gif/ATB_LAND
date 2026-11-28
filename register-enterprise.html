@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ATB LAND - Đăng Ký Tài Khoản Doanh Nghiệp</title>
+  <meta name="description" content="Đăng ký tài khoản doanh nghiệp trên ATB LAND cho công ty quản lý bất động sản, chuỗi khách sạn, resort, homestay và phòng trọ." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#4f46e5',
+              600: '#4338ca',
+              700: '#3730a3',
+              900: '#1e1b4b',
+            },
+            accent: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#0d9488',
+              600: '#0f766e',
+              700: '#115e59',
+            }
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-800 font-sans antialiased selection:bg-accent-600 selection:text-white flex flex-col">
+  <!-- Thanh thông báo nổi -->
+  <div id="toast-container" class="fixed top-5 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+
+  <!-- Thanh điều hướng -->
+  <header class="bg-white/90 backdrop-blur border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="register-enterprise.html" class="flex items-center gap-2.5 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-600 to-accent-700 flex items-center justify-center text-white font-extrabold text-lg shadow-md group-hover:scale-105 transition">
+          ATB
+        </div>
+        <div>
+          <span class="block text-lg font-extrabold tracking-tight text-slate-900 leading-none">ATB LAND</span>
+          <span class="block text-[11px] font-semibold text-accent-600 tracking-wide mt-0.5">DOANH NGHIỆP • TRỌ • KS • RESORT</span>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-2">
+        <a
+          href="login.html"
+          class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:bg-slate-100 transition"
+        >
+          Đăng nhập
+        </a>
+        <a
+          href="register.html"
+          class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:bg-slate-100 transition"
+        >
+          Đăng ký cá nhân
+        </a>
+        <a
+          href="register-enterprise.html"
+          class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-accent-600 text-white shadow-xs transition"
+        >
+          Đăng ký doanh nghiệp
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Nội dung chính Split-Layout -->
+  <main class="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div class="max-w-6xl w-full bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+      <!-- Cột trái: Quyền lợi & Tuân thủ cho Doanh nghiệp trên ATB LAND -->
+      <div class="lg:col-span-5 relative bg-gradient-to-br from-slate-900 via-accent-700 to-accent-600 p-7 sm:p-9 text-white flex flex-col justify-between overflow-hidden">
+        <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-16 w-72 h-72 rounded-full bg-teal-300/15 blur-3xl pointer-events-none"></div>
+
+        <div class="relative space-y-5">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 border border-white/20 text-xs font-semibold">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Cổng Tài Khoản Doanh Nghiệp
+          </span>
+
+          <h1 class="text-2xl sm:text-3xl font-extrabold leading-tight">
+            Vận hành chuỗi lưu trú &amp; bất động sản cho thuê chuyên nghiệp
+          </h1>
+
+          <p class="text-xs sm:text-sm text-teal-50/90 leading-relaxed">
+            Dành cho công ty TNHH, công ty cổ phần, đơn vị quản lý vận hành khách sạn, resort, homestay và hệ thống căn hộ/phòng trọ.
+          </p>
+
+          <div class="space-y-3 pt-2 text-xs">
+            <div class="flex items-start gap-3 bg-white/10 backdrop-blur rounded-2xl p-3.5 border border-white/10">
+              <span class="w-6 h-6 rounded-lg bg-emerald-400/20 text-emerald-300 font-extrabold flex items-center justify-center shrink-0">✓</span>
+              <div>
+                <div class="font-bold text-white">Huy hiệu Doanh Nghiệp Xác Thực</div>
+                <p class="text-teal-100/80 mt-0.5">Hiển thị thông tin pháp nhân, mã số thuế và giấy phép kinh doanh minh bạch.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 bg-white/10 backdrop-blur rounded-2xl p-3.5 border border-white/10">
+              <span class="w-6 h-6 rounded-lg bg-emerald-400/20 text-emerald-300 font-extrabold flex items-center justify-center shrink-0">✓</span>
+              <div>
+                <div class="font-bold text-white">Quản lý đa cơ sở &amp; khung giờ</div>
+                <p class="text-teal-100/80 mt-0.5">Quản lý nhiều cơ sở lưu trú, đặt theo giờ/theo đêm/theo tháng và lịch hẹn xem phòng.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 bg-white/10 backdrop-blur rounded-2xl p-3.5 border border-white/10">
+              <span class="w-6 h-6 rounded-lg bg-emerald-400/20 text-emerald-300 font-extrabold flex items-center justify-center shrink-0">✓</span>
+              <div>
+                <div class="font-bold text-white">Tuân thủ TMĐT &amp; Dữ liệu cá nhân</div>
+                <p class="text-teal-100/80 mt-0.5">Đồng bộ quy chế sàn TMĐT và bảo vệ dữ liệu cá nhân theo Nghị định 13/2023/NĐ-CP.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="relative pt-6 mt-6 border-t border-white/15 flex items-center justify-between text-xs text-teal-100/80">
+          <span>Hà Nội • TP. HCM • Huế</span>
+          <span class="font-semibold text-white">Hotline: 1900 6868</span>
+        </div>
+      </div>
+
+      <!-- Cột phải: Form Đăng ký Tài khoản Doanh nghiệp -->
+      <div class="lg:col-span-7 p-6 sm:p-10 flex flex-col justify-center space-y-4">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full bg-accent-50 text-accent-700 text-xs font-bold mb-2">
+            ĐĂNG KÝ TÀI KHOẢN DOANH NGHIỆP (ENTERPRISE)
+          </span>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">Đăng ký doanh nghiệp trên ATB LAND</h2>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1">
+            Vui lòng cung cấp thông tin pháp nhân và người đại diện/liên hệ chính thức của doanh nghiệp.
+          </p>
+        </div>
+
+        <form id="enterprise-register-form" class="space-y-3.5">
+        
+
+          <!-- Người đại diện / Liên hệ & Số điện thoại doanh nghiệp -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label for="ent-contact-name" class="block text-xs font-bold text-slate-700 mb-1">
+                Họ tên người đại diện / Quản lý *
+              </label>
+              <input
+                id="ent-contact-name"
+                type="text"
+                required
+                placeholder="Trần Quốc Bảo"
+                class="w-full rounded-xl border border-slate-300 bg-slate-50/60 focus:bg-white px-3.5 py-2.5 text-sm outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-100 transition"
+              />
+            </div>
+
+            <div>
+              <label for="ent-phone" class="block text-xs font-bold text-slate-700 mb-1">
+                Số điện thoại liên hệ doanh nghiệp *
+              </label>
+              <input
+                id="ent-phone"
+                type="tel"
+                required
+                pattern="[0-9\s]{9,13}"
+                placeholder="0912 345 678"
+                class="w-full rounded-xl border border-slate-300 bg-slate-50/60 focus:bg-white px-3.5 py-2.5 text-sm outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-100 transition"
+              />
+            </div>
+          </div>
+
+          <!-- Email doanh nghiệp -->
+          <div>
+            <label for="ent-email" class="block text-xs font-bold text-slate-700 mb-1">
+              Email doanh nghiệp (dùng để đăng nhập &amp; nhận xác nhận) *
+            </label>
+            <input
+              id="ent-email"
+              type="email"
+              required
+              placeholder="contact@doanhnghiep.vn"
+              class="w-full rounded-xl border border-slate-300 bg-slate-50/60 focus:bg-white px-3.5 py-2.5 text-sm outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-100 transition"
+            />
+          </div>
+
+          <!-- Mật khẩu & Nhập lại mật khẩu -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label for="ent-password" class="block text-xs font-bold text-slate-700 mb-1">Mật khẩu *</label>
+              <div class="relative">
+                <input
+                  id="ent-password"
+                  type="password"
+                  required
+                  minlength="6"
+                  placeholder="Tối thiểu 6 ký tự"
+                  class="w-full rounded-xl border border-slate-300 bg-slate-50/60 focus:bg-white px-3.5 pr-11 py-2.5 text-sm outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-100 transition"
+                />
+                <button
+                  type="button"
+                  onclick="togglePasswordVisibility('ent-password', this)"
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700 text-xs font-semibold"
+                >
+                  Hiện
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label for="ent-confirm-password" class="block text-xs font-bold text-slate-700 mb-1">Nhập lại mật khẩu *</label>
+              <input
+                id="ent-confirm-password"
+                type="password"
+                required
+                minlength="6"
+                placeholder="Xác nhận mật khẩu"
+                class="w-full rounded-xl border border-slate-300 bg-slate-50/60 focus:bg-white px-3.5 py-2.5 text-sm outline-none focus:border-accent-600 focus:ring-2 focus:ring-accent-100 transition"
+              />
+            </div>
+          </div>
+
+          <label class="flex items-start gap-2.5 text-xs text-slate-600 cursor-pointer select-none pt-1">
+            <input id="ent-terms" type="checkbox" required class="w-4 h-4 mt-0.5 rounded border-slate-300 text-accent-600 focus:ring-accent-500" />
+            <span>
+              Doanh nghiệp cam kết thông tin đăng ký là chính xác, tuân thủ <span class="font-semibold text-slate-800">Quy chế hoạt động ATB LAND</span>, không đăng tin ảo và bảo vệ dữ liệu cá nhân theo Nghị định 13/2023/NĐ-CP.
+            </span>
+          </label>
+
+          <button
+            type="submit"
+            class="w-full py-3 px-4 rounded-xl bg-accent-600 hover:bg-accent-700 active:scale-[0.99] text-white text-sm font-extrabold shadow-lg shadow-accent-600/25 transition"
+          >
+            Đăng ký tài khoản doanh nghiệp
+          </button>
+        </form>
+
+        <div class="text-center text-xs text-slate-500 pt-1 flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+          <span>
+            Đã có tài khoản?
+            <a href="login.html" class="font-bold text-accent-600 hover:underline">Đăng nhập</a>
+          </span>
+          <span>
+            Đăng ký cá nhân?
+            <a href="register.html" class="font-bold text-brand-600 hover:underline">Tài khoản cá nhân</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function showToast(message, isError = false) {
+      const container = document.getElementById('toast-container');
+      const el = document.createElement('div');
+      el.className = `pointer-events-auto border-l-4 ${
+        isError ? 'border-rose-500' : 'border-emerald-500'
+      } bg-slate-900 text-white rounded-2xl px-4 py-3 shadow-xl text-xs sm:text-sm font-medium`;
+      el.textContent = message;
+      container.appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }
+
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const isHidden = input.type === 'password';
+      input.type = isHidden ? 'text' : 'password';
+      btn.textContent = isHidden ? 'Ẩn' : 'Hiện';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('enterprise-register-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const companyName = document.getElementById('ent-company-name').value.trim();
+        const taxCode = document.getElementById('ent-tax-code').value.trim();
+        const email = document.getElementById('ent-email').value.trim();
+        const pass = document.getElementById('ent-password').value;
+        const confirmPass = document.getElementById('ent-confirm-password').value;
+
+        if (pass !== confirmPass) {
+          showToast('Mật khẩu xác nhận chưa trùng khớp. Vui lòng kiểm tra lại!', true);
+          document.getElementById('ent-confirm-password').focus();
+          return;
+        }
+
+        showToast(`Đã đăng ký tài khoản doanh nghiệp "${companyName}" (MST: ${taxCode})! Đang chuyển tới trang đăng nhập...`);
+        setTimeout(() => {
+          window.location.href = `login.html?email=${encodeURIComponent(email)}`;
+        }, 1100);
+      });
+    });
+  </script>
+</body>
+</html>

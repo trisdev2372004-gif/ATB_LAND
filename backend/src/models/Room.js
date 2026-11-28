@@ -63,6 +63,12 @@ const roomUnitSchema = new mongoose.Schema(
         validator: (arr) => Array.isArray(arr) && arr.length > 0,
         message: 'Mỗi phòng cần có ít nhất 1 gói giá',
       },
+      profitPercent: {
+        type: Number,
+        default: null, // null = kế thừa pricing.defaultProfitPercent của Accommodation; nếu nhập số (VD: 15) thì ưu tiên gói này
+        min: [0, '% lợi nhuận không được nhỏ hơn 0'],
+        max: [100, '% lợi nhuận không được vượt quá 100%'],
+      },
     },
     notes: { type: String, trim: true, default: '' },
   },

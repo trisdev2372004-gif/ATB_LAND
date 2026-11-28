@@ -1,7 +1,5 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/layout/Header';
-import Footer from '../components/layout/Footer';
 import SearchFilterForm from '../components/ui/SearchFilterForm';
 
 const ROOM_LISTINGS = [
@@ -253,32 +251,27 @@ export default function RoomsPage() {
   const currentPhoto = activePhotos[photoIndex] || activePhotos[0];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 antialiased">
+    <div class="min-h-screen bg-slate-50 text-slate-800 antialiased">
       {/* Toast thông báo */}
-      <div className="fixed top-5 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none">
+      <div class="fixed top-5 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none">
         {toasts.map((t) => (
           <div
             key={t.id}
-            className="px-4 py-3 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-semibold shadow-lg"
+            class="px-4 py-3 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-semibold shadow-lg"
           >
             {t.message}
           </div>
         ))}
       </div>
 
-      {/* Header dùng chung */}
-      <Header
-        onOpenAuthModal={() => navigate('/login')}
-        onOpenPostRoomGuide={() => showToast('Tính năng Đăng tin phòng trọ đang được cập nhật')}
-      />
 
       {/* Banner đầu trang Phòng trọ */}
-      <section className="bg-gradient-to-br from-slate-900 via-teal-900 to-teal-700 pt-10 pb-14 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section class="bg-gradient-to-br from-slate-900 via-teal-900 to-teal-700 pt-10 pb-14 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Khung bộ lọc dùng chung SearchFilterForm */}
-          <div className="bg-white text-slate-800 rounded-3xl shadow-xl p-4 sm:p-6 border border-slate-100">
-            <div className="flex flex-wrap items-center gap-2 pb-4 mb-4 border-b border-slate-100">
+          <div class="bg-white text-slate-800 rounded-3xl shadow-xl p-4 sm:p-6 border border-slate-100">
+            <div class="flex flex-wrap items-center gap-2 pb-4 mb-4 border-b border-slate-100">
               {[
                 { key: 'ALL', label: `Tất cả (${listings.length})` },
                 { key: 'BOARDING', label: 'Phòng trọ khép kín' },
@@ -289,7 +282,7 @@ export default function RoomsPage() {
                   key={tab.key}
                   type="button"
                   onClick={() => setRoomType(tab.key)}
-                  className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition ${
+                  class={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition ${
                     roomType === tab.key
                       ? 'bg-teal-700 text-white shadow-xs'
                       : 'bg-slate-100 text-slate-700 hover:bg-teal-50 hover:text-teal-700'
@@ -317,22 +310,22 @@ export default function RoomsPage() {
       </section>
 
       {/* Danh sách kết quả phòng trọ */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-8">
-        <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-8">
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-teal-700">
+            <span class="text-xs font-bold uppercase tracking-wider text-teal-700">
               Quỹ phòng cho thuê theo tháng
             </span>
-            <p className="text-sm sm:text-base font-bold text-slate-900 mt-0.5">
+            <p class="text-sm sm:text-base font-bold text-slate-900 mt-0.5">
               Tìm thấy {filteredRooms.length} phòng trọ &amp; căn hộ phù hợp
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div class="flex flex-wrap items-center gap-3">
             <button
               type="button"
               onClick={() => setOnlySaved((prev) => !prev)}
-              className={`px-3.5 py-2 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center gap-2 ${
+              class={`px-3.5 py-2 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center gap-2 ${
                 onlySaved
                   ? 'border-rose-300 bg-rose-50 text-rose-600'
                   : 'border-slate-200 bg-slate-50 hover:bg-rose-50 text-slate-700'
@@ -345,7 +338,7 @@ export default function RoomsPage() {
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               aria-label="Sắp xếp"
-              className="px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm font-semibold text-slate-700 outline-none focus:border-teal-600"
+              class="px-3.5 py-2 rounded-xl border border-slate-200 bg-white text-xs sm:text-sm font-semibold text-slate-700 outline-none focus:border-teal-600"
             >
               <option value="featured">Đề xuất nổi bật</option>
               <option value="price-asc">Giá thuê: Thấp đến cao</option>
@@ -356,7 +349,7 @@ export default function RoomsPage() {
         </div>
 
         {filteredRooms.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredRooms.map((item) => {
               const isSaved = savedIds.includes(item.id);
               const cover = item.images?.[0]?.url;
@@ -367,26 +360,26 @@ export default function RoomsPage() {
                     setSelectedRoom(item);
                     setPhotoIndex(0);
                   }}
-                  className="group cursor-pointer bg-white rounded-2xl border border-slate-200 hover:border-teal-500 shadow-xs hover:shadow-lg transition overflow-hidden flex flex-col justify-between"
+                  class="group cursor-pointer bg-white rounded-2xl border border-slate-200 hover:border-teal-500 shadow-xs hover:shadow-lg transition overflow-hidden flex flex-col justify-between"
                 >
                   <div>
-                    <div className="relative h-48 bg-slate-100 overflow-hidden">
+                    <div class="relative h-48 bg-slate-100 overflow-hidden">
                       <img
                         src={cover}
                         alt={item.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                        class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                       />
-                      <span className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-slate-900/80 text-white text-xs font-bold">
+                      <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-slate-900/80 text-white text-xs font-bold">
                         {item.typeLabel}
                       </span>
                       <button
                         type="button"
                         onClick={(e) => toggleSaved(item.id, e)}
                         aria-label="Lưu yêu thích"
-                        className="absolute top-3 right-3 p-2 rounded-full bg-white/90 hover:bg-white shadow-sm transition"
+                        class="absolute top-3 right-3 p-2 rounded-full bg-white/90 hover:bg-white shadow-sm transition"
                       >
                         <svg
-                          className={`w-4 h-4 ${isSaved ? 'text-rose-500 fill-current' : 'text-slate-400'}`}
+                          class={`w-4 h-4 ${isSaved ? 'text-rose-500 fill-current' : 'text-slate-400'}`}
                           viewBox="0 0 24 24"
                           fill={isSaved ? 'currentColor' : 'none'}
                           stroke="currentColor"
@@ -397,26 +390,26 @@ export default function RoomsPage() {
                       </button>
                     </div>
 
-                    <div className="p-4">
-                      <div className="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1.5">
+                    <div class="p-4">
+                      <div class="flex items-center justify-between text-xs font-semibold text-slate-500 mb-1.5">
                         <span>
                           {item.district}, {item.city}
                         </span>
                         <span>{item.area} m²</span>
                       </div>
-                      <h2 className="text-base font-bold text-slate-900 group-hover:text-teal-700 transition line-clamp-2">
+                      <h2 class="text-base font-bold text-slate-900 group-hover:text-teal-700 transition line-clamp-2">
                         {item.title}
                       </h2>
-                      <p className="text-xs text-slate-500 mt-1 line-clamp-2">{item.address}</p>
-                      <p className="text-[11px] font-semibold text-teal-800 bg-teal-50 inline-block px-2 py-0.5 rounded-md mt-2">
+                      <p class="text-xs text-slate-500 mt-1 line-clamp-2">{item.address}</p>
+                      <p class="text-[11px] font-semibold text-teal-800 bg-teal-50 inline-block px-2 py-0.5 rounded-md mt-2">
                         {item.utilitiesInfo}
                       </p>
 
-                      <div className="flex flex-wrap gap-1.5 mt-3">
+                      <div class="flex flex-wrap gap-1.5 mt-3">
                         {item.amenities.map((am) => (
                           <span
                             key={am}
-                            className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[11px] font-medium"
+                            class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[11px] font-medium"
                           >
                             {am}
                           </span>
@@ -425,9 +418,9 @@ export default function RoomsPage() {
                     </div>
                   </div>
 
-                  <div className="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-                    <span className="text-sm font-extrabold text-teal-700">{item.priceLabel}</span>
-                    <span className="text-xs font-bold text-slate-700 group-hover:text-teal-700">
+                  <div class="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-sm font-extrabold text-teal-700">{item.priceLabel}</span>
+                    <span class="text-xs font-bold text-slate-700 group-hover:text-teal-700">
                       Hẹn xem phòng →
                     </span>
                   </div>
@@ -436,17 +429,17 @@ export default function RoomsPage() {
             })}
           </div>
         ) : (
-          <div className="text-center py-14 px-4 bg-white rounded-2xl border border-dashed border-slate-300">
-            <h3 className="text-base font-bold text-slate-900">
+          <div class="text-center py-14 px-4 bg-white rounded-2xl border border-dashed border-slate-300">
+            <h3 class="text-base font-bold text-slate-900">
               Không tìm thấy phòng trọ phù hợp với bộ lọc
             </h3>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">
               Bạn hãy thử bỏ bớt tiện ích hoặc chọn khu vực khác.
             </p>
             <button
               type="button"
               onClick={resetAllFilters}
-              className="mt-4 px-4 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs sm:text-sm font-semibold transition"
+              class="mt-4 px-4 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs sm:text-sm font-semibold transition"
             >
               Đặt lại bộ lọc
             </button>
@@ -457,17 +450,17 @@ export default function RoomsPage() {
       {/* Modal chi tiết & đặt lịch xem phòng */}
       {selectedRoom && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 p-3 sm:p-5 overflow-y-auto"
+          class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 p-3 sm:p-5 overflow-y-auto"
           role="dialog"
           aria-modal="true"
         >
-          <div className="bg-white rounded-3xl max-w-3xl w-full shadow-2xl border border-slate-100 overflow-hidden my-auto">
-            <div className="px-5 sm:px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-3">
+          <div class="bg-white rounded-3xl max-w-3xl w-full shadow-2xl border border-slate-100 overflow-hidden my-auto">
+            <div class="px-5 sm:px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-3">
               <div>
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-100 text-teal-700">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-100 text-teal-700">
                   {selectedRoom.typeLabel}
                 </span>
-                <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 mt-1">
+                <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 mt-1">
                   {selectedRoom.title}
                 </h3>
               </div>
@@ -475,34 +468,34 @@ export default function RoomsPage() {
                 type="button"
                 onClick={() => setSelectedRoom(null)}
                 aria-label="Đóng"
-                className="p-2 rounded-xl text-slate-500 hover:bg-slate-200/70"
+                class="p-2 rounded-xl text-slate-500 hover:bg-slate-200/70"
               >
                 ✕
               </button>
             </div>
 
-            <div className="p-5 sm:p-6 space-y-5 max-h-[82vh] overflow-y-auto">
-              <div className="relative aspect-[16/9] rounded-2xl bg-slate-100 overflow-hidden">
+            <div class="p-5 sm:p-6 space-y-5 max-h-[82vh] overflow-y-auto">
+              <div class="relative aspect-[16/9] rounded-2xl bg-slate-100 overflow-hidden">
                 <img
                   src={currentPhoto?.url}
                   alt={currentPhoto?.caption || selectedRoom.title}
-                  className="w-full h-full object-cover"
+                  class="w-full h-full object-cover"
                 />
                 {activePhotos.length > 1 && (
-                  <div className="absolute bottom-3 right-3 flex gap-2">
+                  <div class="absolute bottom-3 right-3 flex gap-2">
                     <button
                       type="button"
                       onClick={() =>
                         setPhotoIndex((i) => (i - 1 + activePhotos.length) % activePhotos.length)
                       }
-                      className="px-3 py-1.5 rounded-lg bg-white/90 text-xs font-bold shadow"
+                      class="px-3 py-1.5 rounded-lg bg-white/90 text-xs font-bold shadow"
                     >
                       ← Trước
                     </button>
                     <button
                       type="button"
                       onClick={() => setPhotoIndex((i) => (i + 1) % activePhotos.length)}
-                      className="px-3 py-1.5 rounded-lg bg-white/90 text-xs font-bold shadow"
+                      class="px-3 py-1.5 rounded-lg bg-white/90 text-xs font-bold shadow"
                     >
                       Sau →
                     </button>
@@ -510,28 +503,28 @@ export default function RoomsPage() {
                 )}
               </div>
 
-              <div className="flex flex-wrap items-center justify-between gap-2">
+              <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <p className="text-xl font-extrabold text-teal-700">{selectedRoom.priceLabel}</p>
-                  <p className="text-xs font-semibold text-teal-800">{selectedRoom.utilitiesInfo}</p>
+                  <p class="text-xl font-extrabold text-teal-700">{selectedRoom.priceLabel}</p>
+                  <p class="text-xs font-semibold text-teal-800">{selectedRoom.utilitiesInfo}</p>
                 </div>
-                <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
                   Xem phòng trực tiếp miễn phí
                 </span>
               </div>
 
-              <p className="text-sm text-slate-600">{selectedRoom.address}</p>
-              <p className="text-sm text-slate-600 leading-relaxed">{selectedRoom.description}</p>
+              <p class="text-sm text-slate-600">{selectedRoom.address}</p>
+              <p class="text-sm text-slate-600 leading-relaxed">{selectedRoom.description}</p>
 
               {/* Form hẹn lịch xem phòng */}
               <form
                 onSubmit={handleViewingSubmit}
-                className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3"
+                class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3"
               >
-                <h4 className="text-sm font-extrabold text-slate-900">
+                <h4 class="text-sm font-extrabold text-slate-900">
                   Đặt lịch hẹn xem phòng trực tiếp
                 </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <input
                     type="text"
                     placeholder="Họ và tên người thuê *"
@@ -539,7 +532,7 @@ export default function RoomsPage() {
                     onChange={(e) =>
                       setViewingForm((prev) => ({ ...prev, fullName: e.target.value }))
                     }
-                    className="rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-teal-600"
+                    class="rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-teal-600"
                   />
                   <input
                     type="tel"
@@ -548,7 +541,7 @@ export default function RoomsPage() {
                     onChange={(e) =>
                       setViewingForm((prev) => ({ ...prev, phone: e.target.value }))
                     }
-                    className="rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-teal-600"
+                    class="rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-teal-600"
                   />
                   <input
                     type="date"
@@ -556,14 +549,14 @@ export default function RoomsPage() {
                     onChange={(e) =>
                       setViewingForm((prev) => ({ ...prev, visitDate: e.target.value }))
                     }
-                    className="rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-teal-600"
+                    class="rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-teal-600"
                   />
                   <select
                     value={viewingForm.visitTime}
                     onChange={(e) =>
                       setViewingForm((prev) => ({ ...prev, visitTime: e.target.value }))
                     }
-                    className="rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-teal-600"
+                    class="rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-teal-600"
                   >
                     <option value="SANG">Buổi sáng (08:30 - 11:30)</option>
                     <option value="CHIEU">Buổi chiều (14:00 - 17:30)</option>
@@ -572,7 +565,7 @@ export default function RoomsPage() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-2.5 px-4 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm transition"
+                  class="w-full py-2.5 px-4 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm transition"
                 >
                   Xác nhận lịch hẹn xem phòng
                 </button>
@@ -582,10 +575,7 @@ export default function RoomsPage() {
         </div>
       )}
 
-      {/* Footer dùng chung */}
-      <Footer
-        onOpenPostGuide={() => showToast('Hướng dẫn đăng tin phòng trọ đang được cập nhật')}
-      />
+      
     </div>
   );
 }
